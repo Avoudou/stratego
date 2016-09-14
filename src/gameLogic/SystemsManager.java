@@ -8,6 +8,7 @@ import events.SetActivePieceEvent;
 import events.StrategoAbstractEvent;
 import events.StrategoMoveEvent;
 import gameSystems.AttackSystem;
+import gameSystems.CheckVictorySystem;
 import gameSystems.DeploymentSystem;
 import gameSystems.MoveSystem;
 import gameSystems.RuntimeDataManipulationSystem;
@@ -21,6 +22,7 @@ public class SystemsManager {
 	private AttackSystem attackSystem;
 	private DeploymentSystem deployementSystem;
 	private RuntimeDataManipulationSystem runtimeDataSystem;
+	private CheckVictorySystem checkVictorySystem;
 
 	public SystemsManager() {
 		attackSystem = new AttackSystem();
@@ -37,6 +39,7 @@ public class SystemsManager {
 		}
 		if (anEvent.getClass() == ChangeActivePlayerEvent.class) {
 			runtimeDataSystem.changeActivePlayer(aGame, anEvent);
+
 		}
 		if (anEvent.getClass() == SetActivePieceEvent.class) {
 			runtimeDataSystem.setActivePiece(aGame, anEvent);
@@ -48,6 +51,7 @@ public class SystemsManager {
 		if (anEvent.getClass() == AttackEvent.class) {
 			moveSystem.moveActivePieceForAttack(aGame, anEvent);
 			attackSystem.resolveAttack(aGame, anEvent);
+
 		}
 		if (anEvent.getClass() == AutoDeployEvent.class) {
 			deployementSystem.autoDeployArmy(aGame, anEvent);

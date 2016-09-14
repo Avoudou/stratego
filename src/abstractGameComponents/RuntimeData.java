@@ -8,6 +8,8 @@ public class RuntimeData {
 	private StrategoPiece activePiece;
 	private boolean deploymentPhase = false;
 	private boolean attackToResolve = false;
+	private boolean activePlayerHasAction = true;
+
 	private String getOutInfo;
 
 
@@ -21,6 +23,7 @@ public class RuntimeData {
 	public void setActivePlayer(Player activePlayer) {
 		this.activePlayer = activePlayer;
 	}
+
 
 	public StrategoPiece getActivePiece() {
 		return activePiece;
@@ -50,6 +53,14 @@ public class RuntimeData {
 	}
 	public void setGetOutInfo(String getOutInfo) {
 		this.getOutInfo = getOutInfo;
+	}
+
+	public boolean isActivePlayerHasAction() {
+		return activePlayerHasAction;
+	}
+
+	public void setActivePlayerHasAction(boolean activePlayerHasAction) {
+		this.activePlayerHasAction = activePlayerHasAction;
 	}
 
 

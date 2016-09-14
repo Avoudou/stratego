@@ -13,10 +13,13 @@ public class RuntimeDataManipulationSystem {
 		if (aGame.getRuntimeData().getActivePlayer() == aGame.getPlayerNorth()) {
 			aGame.getRuntimeData().setActivePlayer(aGame.getPlayerSouth());
 			aGame.getRuntimeData().setActivePiece(null);
+			aGame.getRuntimeData().setActivePlayerHasAction(true);
 		} else {
 			aGame.getRuntimeData().setActivePlayer(aGame.getPlayerNorth());
 			aGame.getRuntimeData().setActivePiece(null);
+			aGame.getRuntimeData().setActivePlayerHasAction(true);
 		}
+
 
 	}
 

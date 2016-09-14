@@ -26,7 +26,11 @@ public class MoveSystem {
 		System.out.println("move system input target coord x  " + targetXcoord);
 		System.out.println("move system input target coord y  " + targetYcoord);
 		System.out.println("MOVE SYSTEM RUNNING");
-		
+		if (!aGame.getRuntimeData().isActivePlayerHasAction()) {
+			System.out.println("not your  turn");
+			return;
+
+		}
 		if (!isActivePieceMovable(aGame)) {
 			return;
 		}
@@ -63,6 +67,8 @@ public class MoveSystem {
 		movingPiece.setxPos(targetXcoord);
 		movingPiece.setyPos(targetYcoord);
 		aGame.getBoard().getBoardStracture()[targetYcoord][targetXcoord].setOccupyingPiece(movingPiece);
+		aGame.getRuntimeData().setActivePlayerHasAction(false);
+
 		System.out.println("new x pos " + movingPiece.getxPos() + " new y pos " + movingPiece.getyPos());
 		System.out.println("activePieceNewPosition x  " + aGame.getRuntimeData().getActivePiece().getxPos());
 		System.out.println("activePieceNewPosition y  " + aGame.getRuntimeData().getActivePiece().getyPos());
@@ -102,6 +108,11 @@ public class MoveSystem {
 		StrategoPiece movingPiece = aGame.getRuntimeData().getActivePiece();
 		int targetXcoord = aGame.getRuntimeData().getActivePiece().getxPos() + trueEvent.getdX();
 		int targetYcoord = aGame.getRuntimeData().getActivePiece().getyPos() + trueEvent.getdY();
+
+		if (!aGame.getRuntimeData().isActivePlayerHasAction()) {
+			System.out.println("not your turn");
+			return;
+		}
 
 		if (!isActivePieceMovable(aGame)) {
 			return;
@@ -146,16 +157,17 @@ public class MoveSystem {
 		movingPiece.setxPos(targetXcoord);
 		movingPiece.setyPos(targetYcoord);
 		aGame.getRuntimeData().setAttackToResolve(true);
+		aGame.getRuntimeData().setActivePlayerHasAction(false);
 
 
 	}
 
 
-	private boolean checkTileFree(StrategoGame aGame, int targetXcoord, int targetYcoord) {
+	public boolean checkTileFree(StrategoGame aGame, int targetXcoord, int targetYcoord) {
 		return (aGame.getBoard().getBoardStracture()[targetYcoord][targetXcoord].getOccupyingPiece() == null);
 	}
 
-	private boolean checkIfInsideBoard(int x, int y,StrategoGame aGame) {
+	public boolean checkIfInsideBoard(int x, int y, StrategoGame aGame) {
 
 
 		return (y >= 0) && (x >= 0) && (x <= aGame.getBoard().getBoardStracture()[0].length - 1)
@@ -163,12 +175,12 @@ public class MoveSystem {
 
 	}
 
-	private boolean checkIfLake(StrategoGame aGame, int targetXcoord, int targetYcoord) {
+	public boolean checkIfLake(StrategoGame aGame, int targetXcoord, int targetYcoord) {
 		return (aGame.getBoard().getBoardStracture()[targetYcoord][targetXcoord].getTerrainType() == TerrainType.LAKE);
 
 	}
 
-	private boolean checkValidOwnerships(StrategoGame aGame, int targetXcoord, int targetYcoord){
+	public boolean checkValidOwnerships(StrategoGame aGame, int targetXcoord, int targetYcoord) {
 		StrategoPiece target=aGame.getBoard().getBoardStracture()[targetYcoord][targetXcoord].getOccupyingPiece();
 		ArrayList<StrategoPiece> checkList = getActiveOpponent(aGame).getInGamePieces();
 		for(int i=0;i<checkList.size();i++){
@@ -180,7 +192,7 @@ public class MoveSystem {
 		return false;
 	}
 
-	private Player getActiveOpponent(StrategoGame aGame) {
+	public Player getActiveOpponent(StrategoGame aGame) {
 		if (aGame.getRuntimeData().getActivePlayer() == aGame.getPlayerNorth()) {
 			return aGame.getPlayerSouth();
 		}

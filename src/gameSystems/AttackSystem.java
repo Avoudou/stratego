@@ -38,7 +38,8 @@ public class AttackSystem {
 					+ defendingPiece.getPieceType());
 			aGame.getRuntimeData().setGetOutInfo(
 					"Attacker wins   " + attackingPiece.getPieceType() + " vs " + defendingPiece.getPieceType());
-			aGame.getBoard().getBoardStracture()[attackingPiece.getyPos()][attackingPiece.getyPos()].setOccupyingPiece(attackingPiece);
+			aGame.getBoard().getBoardStracture()[attackingPiece.getyPos()][attackingPiece.getxPos()]
+					.setOccupyingPiece(attackingPiece);
 			
 			defendingPiece.setxPos(-100);
 			defendingPiece.setyPos(-100);
@@ -66,11 +67,12 @@ public class AttackSystem {
 			aGame.getRuntimeData().setAttackToResolve(false);
 
 		} else {
-		System.out.println("defender wins");
+			System.out
+					.println("defender wins" + attackingPiece.getPieceType() + " vs " + defendingPiece.getPieceType());
 		attackingPiece.setxPos(-100);
 		attackingPiece.setyPos(-100);
 		ArrayList<StrategoPiece> checkList = aGame.getRuntimeData().getActivePlayer().getInGamePieces();
-		removePieceFromGame(attackingPiece, checkList);
+			removePieceFromGame(attackingPiece, checkList);
 			aGame.getRuntimeData().setActivePiece(null);
 			aGame.getRuntimeData().setAttackToResolve(false);
 		}

@@ -29,7 +29,7 @@ public class SystemsManager {
 		deployementSystem = new DeploymentSystem();
 		runtimeDataSystem = new RuntimeDataManipulationSystem();
 		moveSystem = new MoveSystem();
-
+		checkVictorySystem = new CheckVictorySystem();
 
 	}
 
@@ -39,6 +39,7 @@ public class SystemsManager {
 		}
 		if (anEvent.getClass() == ChangeActivePlayerEvent.class) {
 			runtimeDataSystem.changeActivePlayer(aGame, anEvent);
+			checkVictorySystem.checkForLeagalMoves(aGame);
 
 		}
 		if (anEvent.getClass() == SetActivePieceEvent.class) {
@@ -46,12 +47,11 @@ public class SystemsManager {
 		}
 		if (anEvent.getClass() == StrategoMoveEvent.class) {
 			moveSystem.moveActivePiece(aGame, anEvent);
-
 		}
 		if (anEvent.getClass() == AttackEvent.class) {
 			moveSystem.moveActivePieceForAttack(aGame, anEvent);
 			attackSystem.resolveAttack(aGame, anEvent);
-
+			checkVictorySystem.checkIfFlagCaptured(aGame);
 		}
 		if (anEvent.getClass() == AutoDeployEvent.class) {
 			deployementSystem.autoDeployArmy(aGame, anEvent);

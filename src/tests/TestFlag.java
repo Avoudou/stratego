@@ -19,17 +19,20 @@ public class TestFlag {
 		MainGameLogic mainLogic = new MainGameLogic(aGame);
 
 		StrategoMainFrame mainFrame = new StrategoMainFrame(aGame, mainLogic);
-		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.FLAG, 0, 0));
+		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.BOMB, 0, 3));
+		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.BOMB, 1, 3));
+		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.BOMB, 4, 3));
+		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.BOMB, 5, 3));
+		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.BOMB, 8, 3));
+		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.BOMB, 9, 3));
+		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SCOUT, 2, 3));
 		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SCOUT, 3, 3));
-		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SCOUT, 0, 1));
-		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SCOUT, 3, 2));
+		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SCOUT, 6, 3));
+		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SCOUT, 7, 3));
 
 		mainLogic.notifyForEvent(new ChangeActivePlayerEvent());
-		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SCOUT, 0, 1));
-		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SCOUT, 1, 6));
-		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SCOUT, 04, 6));
-		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SCOUT, 8, 6));
-		mainLogic.notifyForEvent(new ChangeActivePlayerEvent());
+
+
 		mainLogic.notifyForEvent(new SetActivePieceEvent(3, 3));
 
 		Timer refreshTimer = new Timer();

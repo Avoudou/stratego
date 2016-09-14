@@ -27,8 +27,8 @@ public class CheckVictorySystem extends MoveSystem {
 	}
 
 	public boolean checkForLeagalMoves(StrategoGame aGame) {
-		Player opponet = super.getActiveOpponent(aGame);
-		ArrayList<StrategoPiece> checkList = opponet.getInGamePieces();
+		Player player = aGame.getRuntimeData().getActivePlayer();
+		ArrayList<StrategoPiece> checkList = player.getInGamePieces();
 		for (int i = 0; i < checkList.size(); i++) {
 			StrategoPiece testPiece = checkList.get(i);
 			if (testPiece.getPieceType() != PieceType.BOMB || testPiece.getPieceType() != PieceType.FLAG) {

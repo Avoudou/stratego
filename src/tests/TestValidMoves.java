@@ -12,7 +12,7 @@ import java.util.TimerTask;
 import ui.StrategoMainFrame;
 import abstractGameComponents.StrategoGame;
 
-public class TestFlag {
+public class TestValidMoves {
 	public static void main(String[] args) {
 
 		StrategoGame aGame = new StrategoGame();

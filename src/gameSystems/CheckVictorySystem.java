@@ -31,7 +31,7 @@ public class CheckVictorySystem extends MoveSystem {
 		ArrayList<StrategoPiece> checkList = player.getInGamePieces();
 		for (int i = 0; i < checkList.size(); i++) {
 			StrategoPiece testPiece = checkList.get(i);
-			if (testPiece.getPieceType() != PieceType.BOMB || testPiece.getPieceType() != PieceType.FLAG) {
+			if (testPiece.getPieceType() != PieceType.BOMB && testPiece.getPieceType() != PieceType.FLAG) {
 
 
 			if (checkIfLegalToMove(aGame, testPiece.getyPos(), testPiece.getxPos() + 1)) {

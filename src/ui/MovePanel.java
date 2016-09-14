@@ -19,7 +19,7 @@ public class MovePanel extends JPanel {
 	private MainGameLogic logic;
 
 	private JTextField setActiveUnitXpos;
-
+	private JTextField moveLengthField;
 	private JTextField setActiveUnitYpos;
 
 	private JButton setActivePieceButton;
@@ -32,6 +32,7 @@ public class MovePanel extends JPanel {
 		this.logic = logic;
 		setActiveUnitXpos = new JTextField("0");
 		setActiveUnitYpos = new JTextField("0");
+		moveLengthField = new JTextField("1");
 
 		setActivePieceButton = new JButton("set Active Piece");
 		moveNorth = new JButton("Move North");
@@ -39,8 +40,8 @@ public class MovePanel extends JPanel {
 		moveWest = new JButton("Move West");
 		moveEast = new JButton("Move East");
 
-		setLayout(new GridLayout(1, 8));
-		String spaces = "            ";
+		setLayout(new GridLayout(1, 10));
+		String spaces = "   ";
 		add(new JLabel(spaces + "X coord"));
 		add(setActiveUnitXpos);
 		add(new JLabel(spaces + "Y Coord :"));
@@ -58,7 +59,13 @@ public class MovePanel extends JPanel {
 		add(moveWest);
 		moveEast.addActionListener(new MoveEventListener(1, 0));
 		add(moveEast);
+		add(new JLabel("Scout move length"));
+		add(moveLengthField);
 
+	}
+
+	public int getMoveLength() {
+		return Integer.parseInt(moveLengthField.getText());
 	}
 
 	private class ActiveUnitEventListener implements ActionListener {
@@ -68,6 +75,7 @@ public class MovePanel extends JPanel {
 
 			int x = Integer.parseInt(setActiveUnitXpos.getText());
 			int y = Integer.parseInt(setActiveUnitYpos.getText());
+
 
 			SetActivePieceEvent event = new SetActivePieceEvent(x, y);
 
@@ -80,6 +88,7 @@ public class MovePanel extends JPanel {
 		private int dx;
 		private int dy;
 
+
 		public MoveEventListener(int dx, int dy) {
 			this.dx = dx;
 			this.dy = dy;
@@ -88,12 +97,15 @@ public class MovePanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			StrategoMoveEvent moveEvent = new StrategoMoveEvent(dx, dy);
+			int dL = Integer.parseInt(moveLengthField.getText());
+			StrategoMoveEvent moveEvent = new StrategoMoveEvent(dx, dy, dL);
+
 			System.out.println("move attempted");
 			logic.notifyForEvent(moveEvent);
 
 		}
 
 	}
+
 
 }

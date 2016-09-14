@@ -13,14 +13,16 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class AttackPanel extends JPanel {
 	private MainGameLogic logic;
+	private MovePanel movePanel;
 
 	private JButton attackNorth;
 	private JButton attackSouth;
 	private JButton attackWest;
 	private JButton attackEast;
 
-	public AttackPanel(MainGameLogic gameLogic) {
+	public AttackPanel(MainGameLogic gameLogic, MovePanel movePanel) {
 		this.logic = gameLogic;
+		this.movePanel = movePanel;
 
 		attackNorth = new JButton("attack North");
 		attackSouth = new JButton("attack South");
@@ -53,7 +55,8 @@ public class AttackPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			AttackEvent attackEvent = new AttackEvent(dx, dy);
+			int dL = movePanel.getMoveLength();
+			AttackEvent attackEvent = new AttackEvent(dx, dy, dL);
 			System.out.println("attack Button pressed");
 			logic.notifyForEvent(attackEvent);
 

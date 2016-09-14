@@ -38,8 +38,8 @@ public class StrategoMainFrame extends JFrame {
 
 		this.uiPanel = new StrategoDeployPanel(gameLogic);
 		this.boardPanel = new BoardPanel(this.gameRepresented);
-		this.attackPanel = new AttackPanel(gameLogic);
 		this.movePanel=  new MovePanel(gameLogic);
+		this.attackPanel = new AttackPanel(gameLogic, movePanel);
 		this.outPanel = new OutputPanel(this.gameRepresented);
 		JPanel southPanel = new JPanel();
 

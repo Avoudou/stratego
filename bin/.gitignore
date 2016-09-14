@@ -1,9 +1,3 @@
-/abstractGameComponents/
-/events/
-/factorys/
-/gameLogic/
-/gameObjects/
 /gameSystems/
-/run/
-/tests/
 /ui/
+/tests/

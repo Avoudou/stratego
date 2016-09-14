@@ -12,25 +12,27 @@ import gameObjects.StrategoPiece;
 public class AttackSystem {
 
 	public void resolveAttack(StrategoGame aGame, StrategoAbstractEvent anEvent) {
+
+		if (!aGame.getRuntimeData().isAttackToResolve()) {
+			return;
+		}
 		StrategoPiece attackingPiece = aGame.getRuntimeData().getActivePiece();
 		StrategoPiece defendingPiece = aGame.getBoard().getBoardStracture()[attackingPiece.getyPos()][attackingPiece
 				.getxPos()].getOccupyingPiece();
 
 
-		System.out.println("attack event x Coord :" + attackingPiece.getxPos());
-		System.out.println("attack event y Coord :" + attackingPiece.getyPos());
+		// System.out.println("attack event x Coord :" + attackingPiece.getxPos());
+		// System.out.println("attack event y Coord :" + attackingPiece.getyPos());
+		//
+		// System.out.println("def event x Coord :" + defendingPiece.getxPos());
+		// System.out.println("def event y Coord :" + defendingPiece.getyPos());
+		//
+		// System.out.println((PieceHierarchyData.pieceLvlMap.get(attackingPiece.getPieceType()))
+		// + " attackingPiece power");
+		// System.out.println((PieceHierarchyData.pieceLvlMap.get(defendingPiece.getPieceType()))
+		// + " defendingPiece power");
 
-		System.out.println("def event x Coord :" + defendingPiece.getxPos());
-		System.out.println("def event y Coord :" + defendingPiece.getyPos());
-
-		System.out.println((PieceHierarchyData.pieceLvlMap.get(attackingPiece.getPieceType()))
-				+ " attackingPiece power");
-		System.out.println((PieceHierarchyData.pieceLvlMap.get(defendingPiece.getPieceType()))
-				+ " defendingPiece power");
-
-		if (!aGame.getRuntimeData().isAttackToResolve()) {
-			return;
-		} else if (attackWins(attackingPiece, defendingPiece)) {
+		if (attackWins(attackingPiece, defendingPiece)) {
 			System.out
 .println("Attacker wins   " + attackingPiece.getPieceType() + " vs "
 					+ defendingPiece.getPieceType());
@@ -60,6 +62,7 @@ public class AttackSystem {
 			removePieceFromGame(defendingPiece, checkList);
 			checkList = aGame.getRuntimeData().getActivePlayer().getInGamePieces();
 			removePieceFromGame(attackingPiece, checkList);
+			aGame.getRuntimeData().setActivePiece(null);
 			aGame.getRuntimeData().setAttackToResolve(false);
 
 		} else {
@@ -68,6 +71,7 @@ public class AttackSystem {
 		attackingPiece.setyPos(-100);
 		ArrayList<StrategoPiece> checkList = aGame.getRuntimeData().getActivePlayer().getInGamePieces();
 		removePieceFromGame(attackingPiece, checkList);
+			aGame.getRuntimeData().setActivePiece(null);
 			aGame.getRuntimeData().setAttackToResolve(false);
 		}
 	}

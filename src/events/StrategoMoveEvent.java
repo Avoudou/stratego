@@ -4,12 +4,14 @@ public class StrategoMoveEvent extends StrategoAbstractEvent {
 
 
 
-	int dX;
+	private int pathLength = 1;
 
-	int dY;
+	private int dX;
 
-	public StrategoMoveEvent(int dX, int dY) {
+	private int dY;
 
+	public StrategoMoveEvent(int dX, int dY, int dL) {
+		this.pathLength = dL;
 		this.dX = dX;
 		this.dY = dY;
 	}
@@ -19,6 +21,14 @@ public class StrategoMoveEvent extends StrategoAbstractEvent {
 
 	public int getdY() {
 		return dY;
+	}
+
+	public int getPathLength() {
+		return pathLength;
+	}
+
+	public void setPathLength(int pathLength) {
+		this.pathLength = pathLength;
 	}
 
 }

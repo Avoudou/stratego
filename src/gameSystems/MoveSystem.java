@@ -15,17 +15,38 @@ public class MoveSystem {
 	public void moveActivePiece(StrategoGame aGame, StrategoAbstractEvent anEvent) {
 		
 		StrategoMoveEvent trueEvent = (StrategoMoveEvent) anEvent;
-		int targetXcoord = aGame.getRuntimeData().getActivePiece().getxPos() + trueEvent.getdX();
-		int targetYcoord = aGame.getRuntimeData().getActivePiece().getyPos() + trueEvent.getdY();
+		
+		StrategoPiece movingPiece = aGame.getRuntimeData().getActivePiece();
+		
+
+		int targetXcoord = movingPiece.getxPos() + trueEvent.getdX();
+		int targetYcoord = movingPiece.getyPos() + trueEvent.getdY();
+		
+
 		System.out.println("move system input target coord x  " + targetXcoord);
 		System.out.println("move system input target coord y  " + targetYcoord);
 		System.out.println("MOVE SYSTEM RUNNING");
+		
+		if (!isActivePieceMovable(aGame)) {
+			return;
+		}
+		if (movingPiece.getPieceType() == PieceType.SCOUT) {
+			int pathLength = trueEvent.getPathLength();
+			targetXcoord = movingPiece.getxPos() + trueEvent.getdX() * pathLength;
+			targetYcoord = movingPiece.getyPos() + trueEvent.getdY() * pathLength;
+
+			if (!checkScoutPath(aGame, trueEvent, targetXcoord, targetYcoord)) {
+				return;
+			}
+
+		}
+		
 		if (!checkIfInsideBoard(targetXcoord, targetYcoord, aGame)) {
 			System.out.println("illegal Coords");
 			return;
 		}
 
-		if (!checkTileOccupied(aGame, targetXcoord, targetYcoord)) {
+		if (!checkTileFree(aGame, targetXcoord, targetYcoord)) {
 			System.out.println("tile taken  ");
 			return;
 		}
@@ -33,11 +54,10 @@ public class MoveSystem {
 			System.out.println("tile  is a lake");
 			return;
 		}
-		if (!isActivePieceMovable(aGame)) {
-			return;
-		}
+		
 
-		StrategoPiece movingPiece = aGame.getRuntimeData().getActivePiece();
+
+		
 		System.out.println("old w x pos " + movingPiece.getxPos() + " old y pos " + movingPiece.getxPos());
 		aGame.getBoard().getBoardStracture()[movingPiece.getyPos()][movingPiece.getxPos()].setOccupyingPiece(null);
 		movingPiece.setxPos(targetXcoord);
@@ -49,26 +69,69 @@ public class MoveSystem {
 		System.out.println(movingPiece);
 		System.out.println(aGame.getRuntimeData().getActivePiece());
 
+		}
 
+	private boolean checkScoutPath(StrategoGame aGame, StrategoMoveEvent anEvent, int targetXcoord, int targetYcoord) {
+		StrategoPiece movingPiece = aGame.getRuntimeData().getActivePiece();
+		for (int i = movingPiece.getyPos() + anEvent.getdY(); i <= targetYcoord; i++) {
+			for (int j = movingPiece.getxPos() + anEvent.getdX(); j <= targetXcoord; j++) {
+				if (!checkIfInsideBoard(j, i, aGame)) {
+					System.out.println("illegal target Coords");
+					return false;
+				}
+
+				if (!checkTileFree(aGame, j, i)) {
+					System.out.println("blocked path");
+					return false;
+				}
+				if (checkIfLake(aGame, j, i)) {
+					System.out.println("lake in path");
+					return false;
+				}
+
+
+			}
+
+		}
+		return true;
 	}
+
 
 	public void moveActivePieceForAttack(StrategoGame aGame, StrategoAbstractEvent anEvent) {
 		StrategoMoveEvent trueEvent = (StrategoMoveEvent) anEvent;
+		StrategoPiece movingPiece = aGame.getRuntimeData().getActivePiece();
 		int targetXcoord = aGame.getRuntimeData().getActivePiece().getxPos() + trueEvent.getdX();
 		int targetYcoord = aGame.getRuntimeData().getActivePiece().getyPos() + trueEvent.getdY();
+
+		if (!isActivePieceMovable(aGame)) {
+			return;
+		}
+		if (movingPiece.getPieceType() == PieceType.SCOUT) {
+			int pathLength = trueEvent.getPathLength();
+			targetXcoord = movingPiece.getxPos() + trueEvent.getdX() * pathLength;
+			targetYcoord = movingPiece.getyPos() + trueEvent.getdY() * pathLength;
+
+			if (!checkScoutPath(aGame, trueEvent, targetXcoord - Math.abs(trueEvent.getdX()),
+					targetYcoord - Math.abs(trueEvent.getdY()))) {
+				return;
+			}
+		}
+		System.out.println("moveFORattack  system  x input :" + targetXcoord);
+		System.out.println("moveFORattack  system  y input :" + targetYcoord);
 
 		if (!checkIfInsideBoard(targetXcoord, targetYcoord, aGame)) {
 			System.out.println("illegal Coords");
 			return;
 		}
+
 		if (checkIfLake(aGame, targetXcoord, targetYcoord)) {
 			System.out.println("tile  is a lake");
 			return;
 		}
 
 
-		if (checkTileOccupied(aGame, targetXcoord, targetYcoord)) {
-			System.out.println("noOneToAttack  ");
+		if (checkTileFree(aGame, targetXcoord, targetYcoord)) {
+			System.out.println("noOneToAttack  in  x= " + targetXcoord + "  y= " + targetYcoord);
 			return;
 		}
 		if (!checkValidOwnerships(aGame, targetXcoord, targetYcoord)) {
@@ -76,19 +139,19 @@ public class MoveSystem {
 			return;
 
 		}
-		if (!isActivePieceMovable(aGame)) {
-			return;
-		}
+		System.out.println("moveFORattack  system  x input :" + targetXcoord);
+		System.out.println("moveFORattack  system  y input :" + targetYcoord);
 
-		StrategoPiece movingPiece = aGame.getRuntimeData().getActivePiece();
 		aGame.getBoard().getBoardStracture()[movingPiece.getyPos()][movingPiece.getxPos()].setOccupyingPiece(null);
 		movingPiece.setxPos(targetXcoord);
 		movingPiece.setyPos(targetYcoord);
 		aGame.getRuntimeData().setAttackToResolve(true);
 
+
 	}
 
-	private boolean checkTileOccupied(StrategoGame aGame, int targetXcoord, int targetYcoord) {
+
+	private boolean checkTileFree(StrategoGame aGame, int targetXcoord, int targetYcoord) {
 		return (aGame.getBoard().getBoardStracture()[targetYcoord][targetXcoord].getOccupyingPiece() == null);
 	}
 

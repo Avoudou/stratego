@@ -2,17 +2,17 @@ package events;
 
 public class AttackEvent extends StrategoMoveEvent {
 
-	public AttackEvent(int dX, int dY) {
-		super(dX, dY);
+	public AttackEvent(int dX, int dY, int dL) {
+		super(dX, dY, dL);
 
 	}
 
 	public int getdX() {
-		return dX;
+		return super.getdX();
 	}
 
 	public int getdY() {
-		return dY;
+		return super.getdY();
 	}
 
 }

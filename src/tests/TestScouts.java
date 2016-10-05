@@ -28,7 +28,7 @@ public class TestScouts {
 		mainLogic.notifyForEvent(new ChangeActivePlayerEvent());
 		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SCOUT, 0, 6));
 		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SCOUT, 1, 6));
-		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SCOUT, 04, 6));
+		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SCOUT, 4, 6));
 		mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SCOUT, 8, 6));
 		mainLogic.notifyForEvent(new ChangeActivePlayerEvent());
 		mainLogic.notifyForEvent(new SetActivePieceEvent(3, 3));

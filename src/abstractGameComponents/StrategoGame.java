@@ -7,7 +7,9 @@ import gameObjects.StrategoPiece;
 
 import java.util.ArrayList;
 
-public class StrategoGame {
+import abstractDefinitions.SearchState;
+
+public class StrategoGame extends SearchState {
 
 	private StrategoBoard board;
 
@@ -59,6 +61,18 @@ public class StrategoGame {
 
 	public void setPlayerNorth(Player playerA) {
 		this.playerNorth = playerA;
+	}
+
+	@Override
+	public SearchState deepCopySelf() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getActivePlayer() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

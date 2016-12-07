@@ -51,13 +51,33 @@ public class SystemsManager {
 		if (anEvent.getClass() == AttackEvent.class) {
 			moveSystem.moveActivePieceForAttack(aGame, anEvent);
 			attackSystem.resolveAttack(aGame, anEvent);
-			checkVictorySystem.checkIfFlagCaptured(aGame);
+			checkVictorySystem.checkIfOpponentFlagCaptured(aGame);
 		}
 		if (anEvent.getClass() == AutoDeployEvent.class) {
 			deployementSystem.autoDeployArmy(aGame, anEvent);
 
 		}
 
+	}
+
+	public MoveSystem getMoveSystem() {
+		return moveSystem;
+	}
+
+	public AttackSystem getAttackSystem() {
+		return attackSystem;
+	}
+
+	public DeploymentSystem getDeployementSystem() {
+		return deployementSystem;
+	}
+
+	public RuntimeDataManipulationSystem getRuntimeDataSystem() {
+		return runtimeDataSystem;
+	}
+
+	public CheckVictorySystem getCheckVictorySystem() {
+		return checkVictorySystem;
 	}
 
 }

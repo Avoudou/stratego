@@ -1,15 +1,32 @@
 package aiPack;
 
+import events.StrategoAbstractEvent;
+import gameLogic.SystemsManager;
 import abstractDefinitions.TreeNode;
 import abstractGameComponents.StrategoGame;
 import abstractSearchComponents.Rules;
-import events.StrategoAbstractEvent;
 
 public class StrategoRules extends Rules<StrategoGame> {
 
+	private SystemsManager systemManager;
+
+	public StrategoRules(SystemsManager systemManager){
+		this.systemManager = systemManager;
+	}
+
 	@Override
 	public boolean isTerminal(TreeNode<StrategoGame, ?> aNode) {
-		// TODO Auto-generated method stub
+		if (systemManager.getCheckVictorySystem().checkIfOpponentFlagCaptured(aNode.getState())) {
+			return true;
+		}
+		// // TODO : implement the other conditions
+		// if (false) {
+		// return true;
+		// }
+		//
+		// if (false) {
+		// return true;
+		// }
 		return false;
 	}
 

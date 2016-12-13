@@ -39,4 +39,17 @@ public class StrategoPiece {
 		this.yPos = yPos;
 	}
 
+	public StrategoPiece copyPiece() {
+		StrategoPiece copy = new StrategoPiece(pieceType);
+		copy.setxPos(xPos);
+		copy.setyPos(yPos);
+		return copy;
+	}
+
+	@Override
+	public String toString() {
+		return "StrategoPiece [pieceID=" + pieceID + ", pieceType=" + pieceType + ", xPos=" + xPos + ", yPos=" + yPos
+				+ "]";
+	}
+
 }

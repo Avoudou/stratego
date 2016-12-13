@@ -20,18 +20,6 @@ public class AttackSystem {
 		StrategoPiece defendingPiece = aGame.getBoard().getBoardStracture()[attackingPiece.getyPos()][attackingPiece
 				.getxPos()].getOccupyingPiece();
 
-
-		// System.out.println("attack event x Coord :" + attackingPiece.getxPos());
-		// System.out.println("attack event y Coord :" + attackingPiece.getyPos());
-		//
-		// System.out.println("def event x Coord :" + defendingPiece.getxPos());
-		// System.out.println("def event y Coord :" + defendingPiece.getyPos());
-		//
-		// System.out.println((PieceHierarchyData.pieceLvlMap.get(attackingPiece.getPieceType()))
-		// + " attackingPiece power");
-		// System.out.println((PieceHierarchyData.pieceLvlMap.get(defendingPiece.getPieceType()))
-		// + " defendingPiece power");
-
 		if (attackWins(attackingPiece, defendingPiece)) {
 			System.out
 .println("Attacker wins   " + attackingPiece.getPieceType() + " vs "
@@ -78,12 +66,12 @@ public class AttackSystem {
 		}
 	}
 
-	private boolean combatIsDraw(StrategoPiece attackingPiece, StrategoPiece defendingPiece) {
+	public boolean combatIsDraw(StrategoPiece attackingPiece, StrategoPiece defendingPiece) {
 		return (int) (PieceHierarchyData.pieceLvlMap.get(attackingPiece.getPieceType())) == (int) (PieceHierarchyData.pieceLvlMap
 				.get(defendingPiece.getPieceType()));
 	}
 
-	private boolean attackWins(StrategoPiece attackingPiece, StrategoPiece defendingPiece) {
+	public boolean attackWins(StrategoPiece attackingPiece, StrategoPiece defendingPiece) {
 		if (attackingPiece.getPieceType() == PieceType.SPY && defendingPiece.getPieceType() == PieceType.MARSHAL) {
 			return true;
 		}
@@ -94,19 +82,61 @@ public class AttackSystem {
 				.get(defendingPiece.getPieceType()));
 	}
 
-	private void removePieceFromGame(StrategoPiece defendingPiece, ArrayList<StrategoPiece> checkList) {
+	public void removePieceFromGame(StrategoPiece aPiece, ArrayList<StrategoPiece> checkList) {
 		for (int i = 0; i < checkList.size(); i++) {
-			if (defendingPiece.getPieceID() == checkList.get(i).getPieceID()) {
+			if (aPiece.getPieceID() == checkList.get(i).getPieceID()) {
 				checkList.remove(i);
 
 			}
 		}
 	}
 	
-	private Player getActiveOpponent(StrategoGame aGame) {
+	public Player getActiveOpponent(StrategoGame aGame) {
 		if (aGame.getRuntimeData().getActivePlayer() == aGame.getPlayerNorth()) {
 			return aGame.getPlayerSouth();
 		}
 		return aGame.getPlayerNorth();
+	}
+
+	// Ai method
+	public void resolveAttack(StrategoPiece attackingPiece, StrategoPiece defendingPiece, StrategoGame aGame) {
+		System.out.println("Resolving attack " + attackingPiece + " " + defendingPiece);
+		if (attackWins(attackingPiece, defendingPiece)) {
+
+
+			aGame.getBoard().getBoardStracture()[attackingPiece.getyPos()][attackingPiece.getxPos()]
+					.setOccupyingPiece(attackingPiece);
+
+			defendingPiece.setxPos(-100);
+			defendingPiece.setyPos(-100);
+
+			ArrayList<StrategoPiece> checkList = getActiveOpponent(aGame).getInGamePieces();
+
+			removePieceFromGame(defendingPiece, checkList);
+
+		} else if (combatIsDraw(attackingPiece, defendingPiece)) {
+
+
+			aGame.getBoard().getBoardStracture()[attackingPiece.getyPos()][attackingPiece.getyPos()]
+					.setOccupyingPiece(null);
+
+			attackingPiece.setxPos(-100);
+			attackingPiece.setyPos(-100);
+			defendingPiece.setxPos(-100);
+			defendingPiece.setyPos(-100);
+
+			ArrayList<StrategoPiece> checkList = getActiveOpponent(aGame).getInGamePieces();
+			removePieceFromGame(defendingPiece, checkList);
+			checkList = aGame.getRuntimeData().getActivePlayer().getInGamePieces();
+			removePieceFromGame(attackingPiece, checkList);
+		} else {
+
+			attackingPiece.setxPos(-100);
+			attackingPiece.setyPos(-100);
+			ArrayList<StrategoPiece> checkList = aGame.getRuntimeData().getActivePlayer().getInGamePieces();
+			removePieceFromGame(attackingPiece, checkList);
+
+		}
+
 	}
 }

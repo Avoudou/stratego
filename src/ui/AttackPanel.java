@@ -1,7 +1,9 @@
 package ui;
 
 import events.AttackEvent;
+import events.StrategoMoveEvent;
 import gameLogic.MainGameLogic;
+import gameLogic.SystemsManager;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -10,24 +12,36 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import abstractGameComponents.StrategoGame;
+import aiPack.StrategoMctsPerformer;
+import aiPack.StrategoMoveGenerator;
+import aiPack.StrategoNode;
+import aiPack.StrategoPlaythrough;
+import aiPack.StrategoRules;
+
 @SuppressWarnings("serial")
 public class AttackPanel extends JPanel {
 	private MainGameLogic logic;
 	private MovePanel movePanel;
+	private StrategoGame game;
 
 	private JButton attackNorth;
 	private JButton attackSouth;
 	private JButton attackWest;
 	private JButton attackEast;
+	private JButton mcts;
 
-	public AttackPanel(MainGameLogic gameLogic, MovePanel movePanel) {
+	public AttackPanel(MainGameLogic gameLogic, MovePanel movePanel, StrategoGame game) {
 		this.logic = gameLogic;
 		this.movePanel = movePanel;
+		this.game = game;
 
 		attackNorth = new JButton("attack North");
 		attackSouth = new JButton("attack South");
 		attackWest = new JButton("attack West");
 		attackEast = new JButton("attack East");
+		mcts = new JButton("MCTS");
+
 
 		setLayout(new GridLayout(6, 1));
 
@@ -39,6 +53,8 @@ public class AttackPanel extends JPanel {
 		add(attackWest);
 		attackEast.addActionListener(new AttackEventListener(1, 0));
 		add(attackEast);
+		mcts.addActionListener(new MctsListener(logic.getManager()));
+		add(mcts);
 
 	}
 	
@@ -63,4 +79,24 @@ public class AttackPanel extends JPanel {
 		}
 
 	}
+
+	private class MctsListener implements ActionListener {
+		private SystemsManager manager;
+		private StrategoMctsPerformer performer;
+
+		public MctsListener(SystemsManager manager) {
+			performer = new StrategoMctsPerformer(new StrategoRules(manager), new StrategoMoveGenerator(manager),
+					new StrategoPlaythrough(new StrategoMoveGenerator(manager), new StrategoRules(manager)));
+
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			StrategoMoveEvent move = (StrategoMoveEvent) (performer.runMCTS(new StrategoNode(game))).getAction();
+			System.out.println(move.getdX() + "=x|y=" + move.getdY());
+
+		}
+	}
+
+
 }

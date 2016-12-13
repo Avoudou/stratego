@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import abstractGameComponents.Player;
 import abstractGameComponents.StrategoGame;
+import events.ChangeActivePlayerEvent;
 import events.StrategoAbstractEvent;
 import events.StrategoMoveEvent;
 import gameObjects.PieceType;
@@ -11,6 +12,14 @@ import gameObjects.StrategoPiece;
 import gameObjects.TerrainType;
 
 public class MoveSystem {
+
+	private AttackSystem attackSystem;
+	private RuntimeDataManipulationSystem runtimeSystem;
+
+	public MoveSystem() {
+		this.attackSystem = new AttackSystem();
+		this.runtimeSystem = new RuntimeDataManipulationSystem();
+	}
 
 	public void moveActivePiece(StrategoGame aGame, StrategoAbstractEvent anEvent) {
 		
@@ -162,14 +171,82 @@ public class MoveSystem {
 
 	}
 
+	// method for AI different function than those in the game
+	public void applyAction(StrategoGame aGame, StrategoAbstractEvent anEvent) {
+		StrategoMoveEvent trueEvent = (StrategoMoveEvent) anEvent;
+		StrategoPiece movingPiece = aGame.getBoard().getBoardStracture()[trueEvent.getOriginY()][trueEvent.getOrigintX()]
+				.getOccupyingPiece();
+		int targetXcoord = trueEvent.getdX();
+		int targetYcoord = trueEvent.getdY();
+
+
+		if (movingPiece == null) {
+			System.out.println("Move Sys line 184 " + " null piece " + trueEvent.getOriginY() + " " + trueEvent.getdY()
+					+ " Y " + trueEvent.getOrigintX() + " " + trueEvent.getdX() + " free "
+					+ checkTileFree(aGame, targetXcoord, targetYcoord) + " own ");
+			// System.out.println();
+			// System.out.println(" own " + checkValidOwnerships(aGame, targetXcoord, targetYcoord));
+		}
+		if (movingPiece.getPieceType() == PieceType.BOMB || movingPiece.getPieceType() == PieceType.FLAG) {
+			return;
+		}
+
+		if (!checkIfInsideBoard(targetXcoord, targetYcoord, aGame)) {
+			throw new RuntimeException("illegal coords");
+		}
+
+		if (checkIfLake(aGame, targetXcoord, targetYcoord)) {
+			throw new RuntimeException("tile  is a lake");
+		}
+
+		if (!checkTileFree(aGame, targetXcoord, targetYcoord)) {
+			if (!checkValidOwnerships(aGame, targetXcoord, targetYcoord)) {
+				throw new RuntimeException("invalid ownerships");
+
+			} else {
+				StrategoPiece attackPiece = movingPiece;
+				aGame.getBoard().getBoardStracture()[movingPiece.getyPos()][movingPiece.getxPos()]
+						.setOccupyingPiece(null);
+				StrategoPiece defendPiece = aGame.getBoard().getBoardStracture()[targetYcoord][targetXcoord]
+						.getOccupyingPiece();
+				attackSystem.resolveAttack(attackPiece, defendPiece, aGame);
+				// if (defendPiece == null) {
+				// System.out.println("no def piece");
+				// }
+				attackPiece.setyPos(targetYcoord);
+				attackPiece.setxPos(targetXcoord);
+				defendPiece.setyPos(targetYcoord);
+				defendPiece.setxPos(targetXcoord);
+				// aGame.getBoard().getBoardStracture()[targetYcoord][targetXcoord].getOccupyingPiece().setyPos(
+				// targetYcoord);
+				// aGame.getBoard().getBoardStracture()[targetYcoord][targetXcoord].getOccupyingPiece().setxPos(
+				// targetXcoord);
+				runtimeSystem.changeActivePlayer(aGame, new ChangeActivePlayerEvent());
+				return;
+
+			}
+		}
+
+		aGame.getBoard().getBoardStracture()[movingPiece.getyPos()][movingPiece.getxPos()].setOccupyingPiece(null);
+		movingPiece.setxPos(targetXcoord);
+		movingPiece.setyPos(targetYcoord);
+		aGame.getBoard().getBoardStracture()[targetYcoord][targetXcoord].setOccupyingPiece(movingPiece);
+		runtimeSystem.changeActivePlayer(aGame, new ChangeActivePlayerEvent());
+
+
+	}
+
 
 	public boolean checkTileFree(StrategoGame aGame, int targetXcoord, int targetYcoord) {
 		return (aGame.getBoard().getBoardStracture()[targetYcoord][targetXcoord].getOccupyingPiece() == null);
 	}
 
 	public boolean checkIfInsideBoard(int x, int y, StrategoGame aGame) {
-
-
+		// boolean b = (y >= 0) && (x >= 0) && (x <= aGame.getBoard().getBoardStracture()[0].length - 1)
+		// && (y <= aGame.getBoard().getBoardStracture().length - 1);
+		// System.out.println(("borad lngth " + aGame.getBoard().getBoardStracture().length) + " "
+		// + aGame.getBoard().getBoardStracture()[0].length);
+		// System.out.println("x " + x + " y " + y + " ret " + b);
 		return (y >= 0) && (x >= 0) && (x <= aGame.getBoard().getBoardStracture()[0].length - 1)
 				&& (y <= aGame.getBoard().getBoardStracture().length - 1);
 

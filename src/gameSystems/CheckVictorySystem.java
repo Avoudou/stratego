@@ -11,9 +11,8 @@ import abstractGameComponents.StrategoGame;
 
 
 public class CheckVictorySystem extends MoveSystem {
-	MoveGenerator moveGenerator = new MoveGenerator();
 
-	public boolean checkIfOpponentFlagCaptured(StrategoGame aGame) {
+	public boolean checkIfFlagCaptured(StrategoGame aGame) {
 
 		Player opponet = super.getActiveOpponent(aGame);
 		ArrayList<StrategoPiece> checkList = opponet.getInGamePieces();

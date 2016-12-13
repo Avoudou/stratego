@@ -51,7 +51,7 @@ public class SystemsManager {
 		if (anEvent.getClass() == AttackEvent.class) {
 			moveSystem.moveActivePieceForAttack(aGame, anEvent);
 			attackSystem.resolveAttack(aGame, anEvent);
-			checkVictorySystem.checkIfOpponentFlagCaptured(aGame);
+			checkVictorySystem.checkIfFlagCaptured(aGame);
 		}
 		if (anEvent.getClass() == AutoDeployEvent.class) {
 			deployementSystem.autoDeployArmy(aGame, anEvent);

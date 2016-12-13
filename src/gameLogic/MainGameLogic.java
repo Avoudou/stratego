@@ -1,7 +1,7 @@
 package gameLogic;
 
-import events.StrategoAbstractEvent;
 import abstractGameComponents.StrategoGame;
+import events.StrategoAbstractEvent;
 
 public class MainGameLogic {
 	
@@ -26,4 +26,8 @@ public class MainGameLogic {
 
 
 }
+
+	public SystemsManager getManager() {
+		return systemsManager;
+	}
 }

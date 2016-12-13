@@ -1,5 +1,6 @@
 package events;
 
+
 public class StrategoMoveEvent extends StrategoAbstractEvent {
 
 
@@ -9,11 +10,24 @@ public class StrategoMoveEvent extends StrategoAbstractEvent {
 	private int dX;
 
 	private int dY;
+	
+	private int originX;
+
+	private int originY;
 
 	public StrategoMoveEvent(int dX, int dY, int dL) {
 		this.pathLength = dL;
 		this.dX = dX;
 		this.dY = dY;
+	}
+
+	public StrategoMoveEvent(int originX, int originY, int destX, int destY) {
+
+		this.dX = destX;
+		this.dY = destY;
+		this.originX = originX;
+		this.originY = originY;
+
 	}
 	public int getdX() {
 		return dX;
@@ -30,5 +44,22 @@ public class StrategoMoveEvent extends StrategoAbstractEvent {
 	public void setPathLength(int pathLength) {
 		this.pathLength = pathLength;
 	}
+
+	public int getOrigintX() {
+		return originX;
+	}
+
+	public void setOriginX(int targetX) {
+		this.originX = targetX;
+	}
+
+	public int getOriginY() {
+		return originY;
+	}
+
+	public void setOriginY(int targetY) {
+		this.originY = targetY;
+	}
+
 
 }

@@ -11,16 +11,20 @@ import events.StrategoAbstractEvent;
 
 public class StrategoMctsPerformer extends MCTSperformer<StrategoGame, StrategoAbstractEvent> {
 
-	public StrategoMctsPerformer(Rules<StrategoGame> rules,
-			MoveGenerator<StrategoGame, StrategoAbstractEvent> moveGenerator) {
-		super(rules, moveGenerator);
+	private StrategoPlaythrough playthrough;
 
+	public StrategoMctsPerformer(Rules<StrategoGame> rules,
+			MoveGenerator<StrategoGame, StrategoAbstractEvent> moveGenerator, StrategoPlaythrough playthrough) {
+		super(rules, moveGenerator, playthrough);
+		this.playthrough = playthrough;
 	}
 
 	@Override
 	public void mctsItteration(TreeNode<StrategoGame, StrategoAbstractEvent> rootNode) {
+		StrategoGame initGame = (StrategoGame) rootNode.getState().deepCopySelf();
 
 		TreeNode<StrategoGame, StrategoAbstractEvent> visititedNode = rootNode;
+		visititedNode.setState(schuffleRoot(initGame));
 
 		while (!checkIfLeafNode(visititedNode)) {
 			visititedNode = selection.selectChild(visititedNode);
@@ -29,7 +33,7 @@ public class StrategoMctsPerformer extends MCTSperformer<StrategoGame, StrategoA
 
 
 		if (rules.isTerminal(visititedNode)) {
-			int result = playthrough.returnPlaythroughResult(visititedNode);
+			int result = playthrough.returnStrategoPlaythroughResult(visititedNode.getState());
 			updateTree(visititedNode, result);
 			return;
 		}
@@ -37,12 +41,16 @@ public class StrategoMctsPerformer extends MCTSperformer<StrategoGame, StrategoA
 
 		addChildNodes(visititedNode, moves);
 		visititedNode = selection.selectChild(visititedNode);
-		int result = playthrough.returnPlaythroughResult(visititedNode);
+		int result = playthrough.returnStrategoPlaythroughResult(visititedNode.getState());
+		if (visititedNode.getState().getActivePlayer() == 2) {
+			result *= -1;
+		}
 
 		updateTree(visititedNode, result);
 
 
 	}
+
 	@Override
 	public void addChildNodes(TreeNode<StrategoGame, StrategoAbstractEvent> aNode,
 			ArrayList<StrategoAbstractEvent> moves) {
@@ -60,6 +68,11 @@ public class StrategoMctsPerformer extends MCTSperformer<StrategoGame, StrategoA
 			// newNode.setPlaythoughNode(aNode.isPlaythoughNode());
 
 		}
+	}
+
+	private StrategoGame schuffleRoot(StrategoGame initGame) {
+
+		return initGame;
 	}
 	
 }

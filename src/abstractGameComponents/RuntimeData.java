@@ -63,6 +63,14 @@ public class RuntimeData {
 		this.activePlayerHasAction = activePlayerHasAction;
 	}
 
+	public RuntimeData cloneRunData(Player activePlayer) {
+
+		RuntimeData copy = new RuntimeData();
+		copy.setActivePlayer(activePlayer);
+		return copy;
+
+	}
+
 
 
 }

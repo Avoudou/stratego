@@ -93,6 +93,7 @@ public class AttackPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			StrategoMoveEvent move = (StrategoMoveEvent) (performer.runMCTS(new StrategoNode(game))).getAction();
+			System.out.println(move.getOrigintX() + " = x || y = " + move.getOriginY());
 			System.out.println(move.getdX() + "=x|y=" + move.getdY());
 
 		}

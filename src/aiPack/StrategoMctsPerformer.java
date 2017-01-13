@@ -31,7 +31,7 @@ public class StrategoMctsPerformer extends MCTSperformer<StrategoGame, StrategoA
 
 		}
 
-
+		// ssssS
 		if (rules.isTerminal(visititedNode)) {
 			int result = playthrough.returnStrategoPlaythroughResult(visititedNode.getState());
 			updateTree(visititedNode, result);

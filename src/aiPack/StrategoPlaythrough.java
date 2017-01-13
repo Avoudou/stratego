@@ -40,5 +40,6 @@ public class StrategoPlaythrough extends Playthrough<StrategoGame, StrategoAbstr
 		}
 		return rules.getScoreValue(state, 0);
 	}
+	// ssssssSS
 
 }

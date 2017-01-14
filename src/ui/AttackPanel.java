@@ -3,6 +3,7 @@ package ui;
 import events.AttackEvent;
 import events.ChangeActivePlayerEvent;
 import events.SetActivePieceEvent;
+import events.StrategoAbstractEvent;
 import events.StrategoMoveEvent;
 import gameLogic.MainGameLogic;
 import gameLogic.SystemsManager;
@@ -16,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import variusTests.Logger;
+import abstractDefinitions.TreeNode;
 import abstractGameComponents.StrategoGame;
 import aiPack.StrategoMctsPerformer;
 import aiPack.StrategoMoveGenerator;
@@ -107,9 +109,12 @@ public class AttackPanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
       Logger.println("Making move");
       StrategoGame gameForMCTS = new StrategoGame(game);
-      StrategoMoveEvent move = (StrategoMoveEvent) (performer.runMCTS(new StrategoNode(gameForMCTS))).getAction();
+      TreeNode<StrategoGame, StrategoAbstractEvent> node = performer.runMCTS(new StrategoNode(gameForMCTS));
+      StrategoMoveEvent move = (StrategoMoveEvent) node.getAction();
+      double score = 1.0 * node.getGamesWon() / node.getGamesPlayed();
       Logger.println(move.getOrigintX() + " = x || y = " + move.getOriginY());
       Logger.println(move.getdX() + "=x|y=" + move.getdY());
+      Logger.println("Score: " + score);
 
       int actualDx = move.getdX() - move.getOrigintX();
       int actualDy = move.getdY() - move.getOriginY();

@@ -22,7 +22,7 @@ public class mctsTestA {
 		// mainLogic.notifyForEvent(new ChangeActivePlayerEvent());
 		// mainLogic.notifyForEvent(new SetActivePieceEvent(0, 0));
 
-
+    // Logger.CONSOLE_OUTPUT = false;
 
 		StrategoMainFrame mainFrame = new StrategoMainFrame(aGame, mainLogic);
 

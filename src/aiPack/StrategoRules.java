@@ -81,8 +81,12 @@ public class StrategoRules extends Rules<StrategoGame> {
 	private int calculateTottalStr(ArrayList<StrategoPiece> pieceList) {
 		int sum=0;
 		for (int i = 0; i < pieceList.size(); i++) {
-			sum = sum + PieceHierarchyData.pieceLvlMap.get(pieceList.get(i).getPieceType());
-			// TODO fix conditions
+			StrategoPiece piece = pieceList.get(i);
+      if (piece.getPieceType() == PieceType.FLAG) {
+        sum += 1000;
+      } else {
+        sum = sum + PieceHierarchyData.pieceLvlMap.get(piece.getPieceType());
+      }
 		}
 		return sum;
 	}

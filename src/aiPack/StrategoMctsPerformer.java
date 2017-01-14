@@ -24,12 +24,11 @@ public class StrategoMctsPerformer extends MCTSperformer<StrategoGame, StrategoA
 	public void mctsItteration(TreeNode<StrategoGame, StrategoAbstractEvent> rootNode) {
 		StrategoGame initGame = (StrategoGame) rootNode.getState().deepCopySelf();
 
+    double scoreMultiplier = (initGame.getActivePlayer() == 1) ? 1.0 : -1.0;
+
 		TreeNode<StrategoGame, StrategoAbstractEvent> visititedNode = rootNode;
     int rootPieces = rootNode.getState().getPlayerNorth().getInGamePieces().size()
                      + rootNode.getState().getPlayerSouth().getInGamePieces().size();
-    if (rootPieces != 80) {
-      Logger.println("#Pieces at root: " + rootPieces);
-    }
 
 		visititedNode.setState(schuffleRoot(initGame));
 
@@ -46,6 +45,7 @@ public class StrategoMctsPerformer extends MCTSperformer<StrategoGame, StrategoA
 		// ssssS
 		if (rules.isTerminal(visititedNode)) {
 			int result = playthrough.returnStrategoPlaythroughResult(visititedNode.getState());
+      result *= scoreMultiplier;
 			updateTree(visititedNode, result);
 			return;
 		}

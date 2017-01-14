@@ -100,7 +100,7 @@ public class AttackSystem {
 
 	// Ai method
 	public void resolveAttack(StrategoPiece attackingPiece, StrategoPiece defendingPiece, StrategoGame aGame) {
-		System.out.println("Resolving attack " + attackingPiece + " " + defendingPiece);
+    // System.out.println("Resolving attack " + attackingPiece + " " + defendingPiece);
 		if (attackWins(attackingPiece, defendingPiece)) {
 
 

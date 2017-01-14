@@ -33,11 +33,11 @@ public class MoveSystem {
 		int targetYcoord = movingPiece.getyPos() + trueEvent.getdY();
 		
 
-		System.out.println("move system input target coord x  " + targetXcoord);
-		System.out.println("move system input target coord y  " + targetYcoord);
-		System.out.println("MOVE SYSTEM RUNNING");
+    // System.out.println("move system input target coord x  " + targetXcoord);
+    // System.out.println("move system input target coord y  " + targetYcoord);
+    // System.out.println("MOVE SYSTEM RUNNING");
 		if (!aGame.getRuntimeData().isActivePlayerHasAction()) {
-			System.out.println("not your  turn");
+      Logger.println("not your  turn");
 			return;
 
 		}
@@ -72,18 +72,18 @@ public class MoveSystem {
 
 
 		
-		System.out.println("old w x pos " + movingPiece.getxPos() + " old y pos " + movingPiece.getxPos());
+    // System.out.println("old w x pos " + movingPiece.getxPos() + " old y pos " + movingPiece.getxPos());
 		aGame.getBoard().getBoardStracture()[movingPiece.getyPos()][movingPiece.getxPos()].setOccupyingPiece(null);
 		movingPiece.setxPos(targetXcoord);
 		movingPiece.setyPos(targetYcoord);
 		aGame.getBoard().getBoardStracture()[targetYcoord][targetXcoord].setOccupyingPiece(movingPiece);
 		aGame.getRuntimeData().setActivePlayerHasAction(false);
 
-		System.out.println("new x pos " + movingPiece.getxPos() + " new y pos " + movingPiece.getyPos());
-		System.out.println("activePieceNewPosition x  " + aGame.getRuntimeData().getActivePiece().getxPos());
-		System.out.println("activePieceNewPosition y  " + aGame.getRuntimeData().getActivePiece().getyPos());
-		System.out.println(movingPiece);
-		System.out.println(aGame.getRuntimeData().getActivePiece());
+    // System.out.println("new x pos " + movingPiece.getxPos() + " new y pos " + movingPiece.getyPos());
+    // System.out.println("activePieceNewPosition x  " + aGame.getRuntimeData().getActivePiece().getxPos());
+    // System.out.println("activePieceNewPosition y  " + aGame.getRuntimeData().getActivePiece().getyPos());
+    // System.out.println(movingPiece);
+    // System.out.println(aGame.getRuntimeData().getActivePiece());
 
 		}
 

@@ -1,10 +1,10 @@
-/aiPack/
-/ui/
-/gameSystems/
 /abstractGameComponents/
+/aiPack/
 /events/
 /factorys/
 /gameLogic/
 /gameObjects/
+/gameSystems/
 /run/
 /tests/
+/ui/

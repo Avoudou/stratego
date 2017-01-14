@@ -1,6 +1,8 @@
 package ui;
 
 import events.AttackEvent;
+import events.ChangeActivePlayerEvent;
+import events.SetActivePieceEvent;
 import events.StrategoMoveEvent;
 import gameLogic.MainGameLogic;
 import gameLogic.SystemsManager;
@@ -11,7 +13,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
+import variusTests.Logger;
 import abstractGameComponents.StrategoGame;
 import aiPack.StrategoMctsPerformer;
 import aiPack.StrategoMoveGenerator;
@@ -24,6 +28,7 @@ public class AttackPanel extends JPanel {
 	private MainGameLogic logic;
 	private MovePanel movePanel;
 	private StrategoGame game;
+  private BoardPanel boardPanel;
 
 	private JButton attackNorth;
 	private JButton attackSouth;
@@ -31,16 +36,20 @@ public class AttackPanel extends JPanel {
 	private JButton attackEast;
 	private JButton mcts;
 
-	public AttackPanel(MainGameLogic gameLogic, MovePanel movePanel, StrategoGame game) {
+	// private JButton mctsFullGame;
+
+  public AttackPanel(MainGameLogic gameLogic, MovePanel movePanel, StrategoGame game, BoardPanel boardPanel) {
 		this.logic = gameLogic;
 		this.movePanel = movePanel;
-		this.game = game;
+    this.game = game;
+    this.boardPanel = boardPanel;
 
 		attackNorth = new JButton("attack North");
 		attackSouth = new JButton("attack South");
 		attackWest = new JButton("attack West");
 		attackEast = new JButton("attack East");
 		mcts = new JButton("MCTS");
+		// mctsFullGame = new JButton("mctsFullGame");
 
 
 		setLayout(new GridLayout(6, 1));
@@ -53,8 +62,12 @@ public class AttackPanel extends JPanel {
 		add(attackWest);
 		attackEast.addActionListener(new AttackEventListener(1, 0));
 		add(attackEast);
-		mcts.addActionListener(new MctsListener(logic.getManager()));
+		MctsListener mctsListener = new MctsListener(logic.getManager());
+    mcts.addActionListener(mctsListener);
 		add(mcts);
+
+		// mctsFullGame.addActionListener(new MctsFullGameListener(logic.getManager(), mctsListener));
+		// add(mctsFullGame);
 
 	}
 	
@@ -85,6 +98,7 @@ public class AttackPanel extends JPanel {
 		private StrategoMctsPerformer performer;
 
 		public MctsListener(SystemsManager manager) {
+      this.manager = manager;
 			performer = new StrategoMctsPerformer(new StrategoRules(manager), new StrategoMoveGenerator(manager),
 					new StrategoPlaythrough(new StrategoMoveGenerator(manager), new StrategoRules(manager)));
 
@@ -92,12 +106,105 @@ public class AttackPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			StrategoMoveEvent move = (StrategoMoveEvent) (performer.runMCTS(new StrategoNode(game))).getAction();
-			System.out.println(move.getOrigintX() + " = x || y = " + move.getOriginY());
-			System.out.println(move.getdX() + "=x|y=" + move.getdY());
+      Logger.println("Making move");
+      StrategoGame gameForMCTS = new StrategoGame(game);
+      StrategoMoveEvent move = (StrategoMoveEvent) (performer.runMCTS(new StrategoNode(gameForMCTS))).getAction();
+      Logger.println(move.getOrigintX() + " = x || y = " + move.getOriginY());
+      Logger.println(move.getdX() + "=x|y=" + move.getdY());
+
+      int actualDx = move.getdX() - move.getOrigintX();
+      int actualDy = move.getdY() - move.getOriginY();
+      Logger.println("Trying to move from " + move.getOrigintX() + " " + move.getOrigintX() + " by " + actualDx + " "
+                     + actualDy);
+      StrategoMoveEvent actualMoveEvent = new StrategoMoveEvent(actualDx, actualDy, 1);
+      StrategoMoveEvent actualAttackEvent = new AttackEvent(actualDx, actualDy, 1);
+
+      manager.proccessEvent(new SetActivePieceEvent(move.getOrigintX(), move.getOriginY()), game);
+      manager.proccessEvent(actualMoveEvent, game);
+      manager.proccessEvent(actualAttackEvent, game);
 
 		}
 	}
+
+  static void sleep(int ms) {
+    try {
+      Thread.sleep(ms);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+  }
+
+  private class MctsFullGameListener
+      implements ActionListener {
+    private SystemsManager manager;
+    private StrategoMctsPerformer performer;
+    private MctsListener mctsListener;
+
+    public MctsFullGameListener(SystemsManager manager, MctsListener mctsListener) {
+      this.manager = manager;
+      this.mctsListener = mctsListener;
+      performer = new StrategoMctsPerformer(new StrategoRules(manager),
+                                            new StrategoMoveGenerator(manager),
+                                            new StrategoPlaythrough(new StrategoMoveGenerator(manager),
+                                                                    new StrategoRules(manager)));
+
+    }
+
+    void hacks() {
+      Logger.println("Making move");
+      StrategoGame gameForMCTS = new StrategoGame(game);
+      StrategoMoveEvent move = (StrategoMoveEvent) (performer.runMCTS(new StrategoNode(gameForMCTS))).getAction();
+      Logger.println(move.getOrigintX() + " = x || y = " + move.getOriginY());
+      Logger.println(move.getdX() + "=x|y=" + move.getdY());
+
+      int actualDx = move.getdX() - move.getOrigintX();
+      int actualDy = move.getdY() - move.getOriginY();
+      Logger.println("Trying to move from " + move.getOrigintX() + " " + move.getOrigintX() + " by " + actualDx + " "
+                     + actualDy);
+      StrategoMoveEvent actualMoveEvent = new StrategoMoveEvent(actualDx, actualDy, 1);
+      StrategoMoveEvent actualAttackEvent = new AttackEvent(actualDx, actualDy, 1);
+
+      manager.proccessEvent(new SetActivePieceEvent(move.getOrigintX(), move.getOriginY()), game);
+      manager.proccessEvent(actualMoveEvent, game);
+      manager.proccessEvent(actualAttackEvent, game);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      Logger.println("Working");
+      Runnable r = new Runnable() {
+        
+        @Override
+        public void run() {
+          // AttackPanel.this.boardPanel.repaint();
+          Logger.println("move ");
+          hacks();
+          manager.proccessEvent(new ChangeActivePlayerEvent(), game);
+          Logger.println("Swapped active player");
+          AttackPanel.this.boardPanel.repaint();
+
+        }
+      };
+      Logger.println(AttackPanel.this.getParent().getParent() + "");
+      for (int i = 0; i < 10; i++) {
+        SwingUtilities.invokeLater(r);
+        sleep(500);
+
+        //
+        // Logger.println("move " + i);
+        // mctsListener.actionPerformed(e);
+        // Logger.println("Preformed move " + i + " sleeping");
+        //
+        // sleep(500);
+        // manager.proccessEvent(new ChangeActivePlayerEvent(), game);
+        // Logger.println("Swapped active player");
+        // sleep(500);
+
+      }
+
+    }
+  }
 
 
 }

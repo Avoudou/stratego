@@ -2,6 +2,7 @@ package aiPack;
 
 import java.util.ArrayList;
 
+import variusTests.Logger;
 import abstractDefinitions.TreeNode;
 import abstractGameComponents.StrategoGame;
 import abstractSearchComponents.MCTSperformer;
@@ -24,12 +25,23 @@ public class StrategoMctsPerformer extends MCTSperformer<StrategoGame, StrategoA
 		StrategoGame initGame = (StrategoGame) rootNode.getState().deepCopySelf();
 
 		TreeNode<StrategoGame, StrategoAbstractEvent> visititedNode = rootNode;
+    int rootPieces = rootNode.getState().getPlayerNorth().getInGamePieces().size()
+                     + rootNode.getState().getPlayerSouth().getInGamePieces().size();
+    if (rootPieces != 80) {
+      Logger.println("#Pieces at root: " + rootPieces);
+    }
+
 		visititedNode.setState(schuffleRoot(initGame));
 
-		while (!checkIfLeafNode(visititedNode)) {
-			visititedNode = selection.selectChild(visititedNode);
-
+    while (!rules.isTerminal(visititedNode.getState()) && !checkIfLeafNode(visititedNode)) {
+			TreeNode<StrategoGame, StrategoAbstractEvent> selectChild = selection.selectChild(visititedNode);
+      if (selectChild == null) {
+        break;
+      } else {
+        visititedNode = selectChild;
+      }
 		}
+    Logger.println(" selection result: " + " depth " + visititedNode.getNodeDepth());
 
 		// ssssS
 		if (rules.isTerminal(visititedNode)) {

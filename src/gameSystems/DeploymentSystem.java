@@ -1,6 +1,7 @@
 package gameSystems;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import abstractGameComponents.StrategoGame;
 import events.DeploymentEvent;
@@ -51,18 +52,20 @@ public class DeploymentSystem {
 		ArrayList<StrategoPiece> deployList = aGame.getRuntimeData().getActivePlayer().getUnDeployedPieces();
 		System.out.println(deployList.size());
 
+    Random random = new Random(0);
+
 		if (aGame.getRuntimeData().getActivePlayer() == aGame.getPlayerNorth()) {
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 10; j++) {
-					System.out.println(deployList.size());
-					int tempIndex = (int) (deployList.size() * Math.random());
-					System.out.println("tempIndex : " + tempIndex);
+          // Logger.println("" + deployList.size());
+          int tempIndex = random.nextInt(deployList.size());
+          // Logger.println("tempIndex : " + tempIndex);
 					StrategoPiece randomPiece = deployList.get(tempIndex);
 					deployList.remove(tempIndex);
-					System.out.println("new ListSize : " + deployList.size());
+          // Logger.println("new ListSize : " + deployList.size());
 					randomPiece.setxPos(j);
 					randomPiece.setyPos(i);
-					System.out.println(i + " " + j);
+          // Logger.println(i + " " + j);
 					aGame.getBoard().getBoardStracture()[i][j].setOccupyingPiece(randomPiece);
 
 				}
@@ -70,7 +73,8 @@ public class DeploymentSystem {
 		} else {
 			for (int i = 6; i < 10; i++) {
 				for (int j = 0; j < 10; j++) {
-					int tempIndex = (int) (deployList.size() * Math.random());
+          int tempIndex = random.nextInt(deployList.size());
+          // Logger.println("tempIndex : " + tempIndex);
 					StrategoPiece randomPiece = deployList.get(tempIndex);
 					deployList.remove(tempIndex);
 					randomPiece.setxPos(j);

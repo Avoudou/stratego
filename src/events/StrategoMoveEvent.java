@@ -61,5 +61,9 @@ public class StrategoMoveEvent extends StrategoAbstractEvent {
 		this.originY = targetY;
 	}
 
+  @Override
+  public String toString() {
+    return "StrategoMoveEvent [dX=" + dX + ", dY=" + dY + ", originX=" + originX + ", originY=" + originY + "]";
+  }
 
 }

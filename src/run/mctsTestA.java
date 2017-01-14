@@ -23,6 +23,7 @@ public class mctsTestA {
 		// mainLogic.notifyForEvent(new SetActivePieceEvent(0, 0));
 
 
+
 		StrategoMainFrame mainFrame = new StrategoMainFrame(aGame, mainLogic);
 
 		Timer refreshTimer = new Timer();

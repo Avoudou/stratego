@@ -2,6 +2,7 @@ package gameSystems;
 
 import java.util.ArrayList;
 
+import variusTests.Logger;
 import abstractGameComponents.Player;
 import abstractGameComponents.StrategoGame;
 import events.ChangeActivePlayerEvent;
@@ -119,7 +120,7 @@ public class MoveSystem {
 		int targetYcoord = aGame.getRuntimeData().getActivePiece().getyPos() + trueEvent.getdY();
 
 		if (!aGame.getRuntimeData().isActivePlayerHasAction()) {
-			System.out.println("not your turn");
+      Logger.println("not your turn");
 			return;
 		}
 

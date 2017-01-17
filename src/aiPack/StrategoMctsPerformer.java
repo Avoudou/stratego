@@ -24,11 +24,11 @@ public class StrategoMctsPerformer extends MCTSperformer<StrategoGame, StrategoA
 	public void mctsItteration(TreeNode<StrategoGame, StrategoAbstractEvent> rootNode) {
 		StrategoGame initGame = (StrategoGame) rootNode.getState().deepCopySelf();
 
-    double scoreMultiplier = (initGame.getActivePlayer() == 1) ? 1.0 : -1.0;
+		double scoreMultiplier = (initGame.getActivePlayer() == 1) ? 1.0 : -1.0;
 
 		TreeNode<StrategoGame, StrategoAbstractEvent> visititedNode = rootNode;
-    int rootPieces = rootNode.getState().getPlayerNorth().getInGamePieces().size()
-                     + rootNode.getState().getPlayerSouth().getInGamePieces().size();
+		// int rootPieces = rootNode.getState().getPlayerNorth().getInGamePieces().size()
+		// + rootNode.getState().getPlayerSouth().getInGamePieces().size();
 
 		visititedNode.setState(schuffleRoot(initGame));
 
@@ -40,12 +40,12 @@ public class StrategoMctsPerformer extends MCTSperformer<StrategoGame, StrategoA
         visititedNode = selectChild;
       }
 		}
-    Logger.println(" selection result: " + " depth " + visititedNode.getNodeDepth());
+		Logger.println(" selection result: " + " depth " + visititedNode.getNodeDepth());
 
-		// ssssS
+
 		if (rules.isTerminal(visititedNode)) {
-			int result = playthrough.returnStrategoPlaythroughResult(visititedNode.getState());
-      result *= scoreMultiplier;
+			double result = playthrough.returnStrategoPlaythroughResult(visititedNode.getState());
+			result *= scoreMultiplier;
 			updateTree(visititedNode, result);
 			return;
 		}
@@ -53,7 +53,7 @@ public class StrategoMctsPerformer extends MCTSperformer<StrategoGame, StrategoA
 
 		addChildNodes(visititedNode, moves);
 		visititedNode = selection.selectChild(visititedNode);
-		int result = playthrough.returnStrategoPlaythroughResult(visititedNode.getState());
+		double result = playthrough.returnStrategoPlaythroughResult(visititedNode.getState());
 		if (visititedNode.getState().getActivePlayer() == 2) {
 			result *= -1;
 		}

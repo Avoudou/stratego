@@ -22,7 +22,7 @@ public class StrategoPlaythrough extends Playthrough<StrategoGame, StrategoAbstr
 
 
 
-	public int returnStrategoPlaythroughResult(StrategoGame state) {
+	public double returnStrategoPlaythroughResult(StrategoGame state) {
 		state = (StrategoGame) state.deepCopySelf();
 
 		// tempNode.setPlaythoughNode(true);
@@ -40,6 +40,6 @@ public class StrategoPlaythrough extends Playthrough<StrategoGame, StrategoAbstr
 		}
 		return rules.getScoreValue(state, 0);
 	}
-	// ssssssSS
+
 
 }

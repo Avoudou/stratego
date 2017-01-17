@@ -37,7 +37,8 @@ public class AttackPanel extends JPanel {
 	private JButton attackWest;
 	private JButton attackEast;
 	private JButton mcts;
-  private JButton mctsFullGame;
+
+	// private JButton mctsFullGame;
 
   public AttackPanel(MainGameLogic gameLogic, MovePanel movePanel, StrategoGame game, BoardPanel boardPanel) {
 		this.logic = gameLogic;
@@ -50,7 +51,7 @@ public class AttackPanel extends JPanel {
 		attackWest = new JButton("attack West");
 		attackEast = new JButton("attack East");
 		mcts = new JButton("MCTS");
-    mctsFullGame = new JButton("mctsFullGame");
+		// mctsFullGame = new JButton("mctsFullGame");
 
 
 		setLayout(new GridLayout(6, 1));
@@ -67,8 +68,8 @@ public class AttackPanel extends JPanel {
     mcts.addActionListener(mctsListener);
 		add(mcts);
 
-    mctsFullGame.addActionListener(new MctsFullGameListener(logic.getManager(), mctsListener));
-    add(mctsFullGame);
+		// mctsFullGame.addActionListener(new MctsFullGameListener(logic.getManager(), mctsListener));
+		// add(mctsFullGame);
 
 	}
 	
@@ -97,10 +98,12 @@ public class AttackPanel extends JPanel {
 	private class MctsListener implements ActionListener {
 		private SystemsManager manager;
 		private StrategoMctsPerformer performer;
+		private StrategoRules rules;
 
 		public MctsListener(SystemsManager manager) {
       this.manager = manager;
-			performer = new StrategoMctsPerformer(new StrategoRules(manager), new StrategoMoveGenerator(manager),
+			this.rules = new StrategoRules(manager);
+			performer = new StrategoMctsPerformer(rules, new StrategoMoveGenerator(manager),
 					new StrategoPlaythrough(new StrategoMoveGenerator(manager), new StrategoRules(manager)));
 
 		}
@@ -108,6 +111,7 @@ public class AttackPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
       Logger.println("Making move");
+
       StrategoGame gameForMCTS = new StrategoGame(game);
       TreeNode<StrategoGame, StrategoAbstractEvent> node = performer.runMCTS(new StrategoNode(gameForMCTS));
       StrategoMoveEvent move = (StrategoMoveEvent) node.getAction();

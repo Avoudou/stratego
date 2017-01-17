@@ -1,14 +1,14 @@
 package aiPack;
 
-import events.StrategoAbstractEvent;
+import factorys.GamePieceFactory;
 import gameLogic.SystemsManager;
 import gameObjects.PieceType;
 import gameObjects.StrategoPiece;
 
 import java.util.ArrayList;
 
+import variusTests.Logger;
 import abstractDefinitions.TreeNode;
-import abstractGameComponents.PieceHierarchyData;
 import abstractGameComponents.StrategoGame;
 import abstractSearchComponents.Rules;
 
@@ -31,23 +31,32 @@ public class StrategoRules extends Rules<StrategoGame> {
 		return false;
 	}
 
-	public int getScoreValue(StrategoGame state) {
-		if (isTerminal(state)) {
-			// TODO Return high score for winner
-		}
+	public double getScoreValue(StrategoGame state) {
+
 		ArrayList<StrategoPiece> playerNorthPieces = state.getPlayerNorth().getInGamePieces();
 		ArrayList<StrategoPiece> playerSouthPieces = state.getPlayerSouth().getInGamePieces();
 		int tottalNorthStr = calculateTottalStr(playerNorthPieces);
 		int tottalSouthStr = calculateTottalStr(playerSouthPieces);
-		if (tottalNorthStr > tottalSouthStr) {
-			return 1;
-		}
-		if (tottalNorthStr < tottalSouthStr) {
-			return -1;
-		}
+		double difference = 1.0 * (tottalNorthStr - tottalSouthStr);
+		if (isTerminal(state)) {
+			double terminalScore = (difference > 0) ? 1.0 : -1.0;
+			return terminalScore;
 
+		}
+		// if (tottalNorthStr > tottalSouthStr) {
+		// return 1;
+		// }
+		// if (tottalNorthStr < tottalSouthStr) {
+		// return -1;
+		// }
+		// Logger.println("north str" + (tottalNorthStr));
+		// Logger.println("north str" + (tottalNorthStr));
+		// Logger.println("tottlStr" + (calculateTottalStr()));
 
-		return 0;
+		double score = 1.0 * ((tottalNorthStr - tottalSouthStr)) / calculateTottalStr();
+		if (score < -1.0 || score > 1.0)
+			Logger.println("LAAAAAARGE trouble " + score);
+		return score;
 	}
 
 
@@ -64,10 +73,6 @@ public class StrategoRules extends Rules<StrategoGame> {
 
 	}
 
-	public boolean isAttackAction(StrategoGame state, StrategoAbstractEvent action) {
-		// TODO
-		return false;
-	}
 
 	private boolean checkForFlag(ArrayList<StrategoPiece> pieceList) {
 		for (int i = 0; i < pieceList.size(); i++) {
@@ -82,11 +87,11 @@ public class StrategoRules extends Rules<StrategoGame> {
 		int sum=0;
 		for (int i = 0; i < pieceList.size(); i++) {
 			StrategoPiece piece = pieceList.get(i);
-      if (piece.getPieceType() == PieceType.FLAG) {
-        sum += 1000;
-      } else {
-        sum = sum + PieceHierarchyData.pieceLvlMap.get(piece.getPieceType());
-      }
+			// if (piece.getPieceType() == PieceType.FLAG) {
+			// sum += 1000;
+			// } else {
+				sum = sum + StrategoEvaluationValues.pieceValues.get(piece.getPieceType());
+			// }
 		}
 		return sum;
 	}
@@ -98,9 +103,20 @@ public class StrategoRules extends Rules<StrategoGame> {
 	}
 
 	@Override
-	public int getScoreValue(StrategoGame state, int referance) {
+	public double getScoreValue(StrategoGame state, int referance) {
 		// TODO Review
 		return getScoreValue(state);
+	}
+
+	public int calculateTottalStr() {
+		int result = 0;
+		GamePieceFactory factory = new GamePieceFactory();
+		ArrayList<StrategoPiece> pieceList = factory.createPlayerPieces();
+		for (int i = 0; i < pieceList.size(); i++) {
+			result = result + StrategoEvaluationValues.pieceValues.get((pieceList.get(i).getPieceType()));
+		}
+		return result;
+
 	}
 
 }

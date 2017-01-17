@@ -1,12 +1,14 @@
 package run;
 
 import gameLogic.MainGameLogic;
+import gameLogic.SystemsManager;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import ui.StrategoMainFrame;
 import abstractGameComponents.StrategoGame;
+import aiPack.StrategoRules;
 
 public class mctsTestA {
 
@@ -14,7 +16,7 @@ public class mctsTestA {
 
 		StrategoGame aGame = new StrategoGame();
 		MainGameLogic mainLogic = new MainGameLogic(aGame);
-
+		StrategoRules rules = new StrategoRules(new SystemsManager());
 		// StrategoMainFrame mainFrame = new StrategoMainFrame(aGame, mainLogic);
 		// mainLogic.notifyForEvent(new DeploymentEvent(PieceType.SEARGENT, 0, 0));
 		// mainLogic.notifyForEvent(new ChangeActivePlayerEvent());
@@ -25,6 +27,7 @@ public class mctsTestA {
     // Logger.CONSOLE_OUTPUT = false;
 
 		StrategoMainFrame mainFrame = new StrategoMainFrame(aGame, mainLogic);
+		System.out.println(rules.getScoreValue(aGame));
 
 		Timer refreshTimer = new Timer();
 		TimerTask refreshRate = new TimerTask() {

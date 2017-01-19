@@ -25,10 +25,10 @@ public class StrategoMctsPerformer extends MCTSperformer<StrategoGame, StrategoA
 		StrategoGame initGame = (StrategoGame) rootNode.getState().deepCopySelf();
 
 		double scoreMultiplier = (initGame.getActivePlayer() == 1) ? 1.0 : -1.0;
-
-		TreeNode<StrategoGame, StrategoAbstractEvent> visititedNode = rootNode;
 		// int rootPieces = rootNode.getState().getPlayerNorth().getInGamePieces().size()
 		// + rootNode.getState().getPlayerSouth().getInGamePieces().size();
+
+		TreeNode<StrategoGame, StrategoAbstractEvent> visititedNode = rootNode;
 
 		visititedNode.setState(schuffleRoot(initGame));
 

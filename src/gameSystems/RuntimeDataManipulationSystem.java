@@ -7,6 +7,7 @@ import events.SetActivePieceEvent;
 import events.StrategoAbstractEvent;
 import gameObjects.StrategoPiece;
 
+
 public class RuntimeDataManipulationSystem {
 
 	public void changeActivePlayer(StrategoGame aGame, StrategoAbstractEvent anEvent) {

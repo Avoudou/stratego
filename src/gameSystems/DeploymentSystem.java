@@ -52,7 +52,7 @@ public class DeploymentSystem {
 		ArrayList<StrategoPiece> deployList = aGame.getRuntimeData().getActivePlayer().getUnDeployedPieces();
 		System.out.println(deployList.size());
 
-    boolean fixRandom = true;
+		boolean fixRandom = !true;
     Random random = fixRandom ? new Random(0) : new Random();
 
 		if (aGame.getRuntimeData().getActivePlayer() == aGame.getPlayerNorth()) {

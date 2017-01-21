@@ -6,7 +6,7 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import abstractGameComponents.StrategoGame;
+import project.stratego.ai.mcts.abstractGameComponents.StrategoGame;
 
 @SuppressWarnings("serial")
 public class OutputPanel extends JPanel {

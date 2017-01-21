@@ -1,16 +1,15 @@
 package tests;
 
-import events.ChangeActivePlayerEvent;
-import events.DeploymentEvent;
-import events.SetActivePieceEvent;
-import gameLogic.MainGameLogic;
-import gameObjects.PieceType;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
+import project.stratego.ai.mcts.abstractGameComponents.StrategoGame;
+import project.stratego.ai.mcts.events.ChangeActivePlayerEvent;
+import project.stratego.ai.mcts.events.DeploymentEvent;
+import project.stratego.ai.mcts.events.SetActivePieceEvent;
+import project.stratego.ai.mcts.gameLogic.MainGameLogic;
+import project.stratego.ai.mcts.gameObjects.PieceType;
 import ui.StrategoMainFrame;
-import abstractGameComponents.StrategoGame;
 
 public class TestValidMoves {
 	public static void main(String[] args) {

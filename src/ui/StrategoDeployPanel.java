@@ -1,9 +1,5 @@
 package ui;
 
-import events.AutoDeployEvent;
-import events.DeploymentEvent;
-import gameLogic.MainGameLogic;
-
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +9,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import abstractGameComponents.PieceHierarchyData;
+import project.stratego.ai.mcts.abstractGameComponents.PieceHierarchyData;
+import project.stratego.ai.mcts.events.AutoDeployEvent;
+import project.stratego.ai.mcts.events.DeploymentEvent;
+import project.stratego.ai.mcts.gameLogic.MainGameLogic;
 
 @SuppressWarnings("serial")
 public class StrategoDeployPanel extends JPanel {

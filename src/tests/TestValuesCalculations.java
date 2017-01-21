@@ -1,7 +1,7 @@
 package tests;
 
-import gameLogic.SystemsManager;
-import aiPack.StrategoRules;
+import project.stratego.ai.mcts.aiPack.StrategoRules;
+import project.stratego.ai.mcts.gameLogic.SystemsManager;
 
 public class TestValuesCalculations {
 	public static void main(String[] args) {

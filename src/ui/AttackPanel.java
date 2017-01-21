@@ -1,13 +1,5 @@
 package ui;
 
-import events.AttackEvent;
-import events.ChangeActivePlayerEvent;
-import events.SetActivePieceEvent;
-import events.StrategoAbstractEvent;
-import events.StrategoMoveEvent;
-import gameLogic.MainGameLogic;
-import gameLogic.SystemsManager;
-
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,14 +8,21 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import variusTests.Logger;
-import abstractDefinitions.TreeNode;
-import abstractGameComponents.StrategoGame;
-import aiPack.StrategoMctsPerformer;
-import aiPack.StrategoMoveGenerator;
-import aiPack.StrategoNode;
-import aiPack.StrategoPlaythrough;
-import aiPack.StrategoRules;
+import project.stratego.ai.mcts.abstractDefinitions.TreeNode;
+import project.stratego.ai.mcts.abstractGameComponents.StrategoGame;
+import project.stratego.ai.mcts.aiPack.StrategoMCTSPerformer;
+import project.stratego.ai.mcts.aiPack.StrategoMoveGenerator;
+import project.stratego.ai.mcts.aiPack.StrategoNode;
+import project.stratego.ai.mcts.aiPack.StrategoPlaythrough;
+import project.stratego.ai.mcts.aiPack.StrategoRules;
+import project.stratego.ai.mcts.events.AttackEvent;
+import project.stratego.ai.mcts.events.ChangeActivePlayerEvent;
+import project.stratego.ai.mcts.events.SetActivePieceEvent;
+import project.stratego.ai.mcts.events.StrategoAbstractEvent;
+import project.stratego.ai.mcts.events.StrategoMoveEvent;
+import project.stratego.ai.mcts.gameLogic.MainGameLogic;
+import project.stratego.ai.mcts.gameLogic.SystemsManager;
+import project.stratego.ai.mcts.logger.Logger;
 
 @SuppressWarnings("serial")
 public class AttackPanel extends JPanel {
@@ -104,13 +103,13 @@ public class AttackPanel extends JPanel {
 
 	private class MctsListener implements ActionListener {
 		private SystemsManager manager;
-		private StrategoMctsPerformer performer;
+		private StrategoMCTSPerformer performer;
 		private StrategoRules rules;
 
 		public MctsListener(SystemsManager manager) {
       this.manager = manager;
 			this.rules = new StrategoRules(manager);
-			performer = new StrategoMctsPerformer(rules, new StrategoMoveGenerator(manager),
+			performer = new StrategoMCTSPerformer(rules, new StrategoMoveGenerator(manager),
 					new StrategoPlaythrough(new StrategoMoveGenerator(manager), new StrategoRules(manager)));
 
 		}
@@ -153,13 +152,13 @@ public class AttackPanel extends JPanel {
   private class MctsFullGameListener
       implements ActionListener {
     private SystemsManager manager;
-    private StrategoMctsPerformer performer;
+    private StrategoMCTSPerformer performer;
     private MctsListener mctsListener;
 
     public MctsFullGameListener(SystemsManager manager, MctsListener mctsListener) {
       this.manager = manager;
       this.mctsListener = mctsListener;
-      performer = new StrategoMctsPerformer(new StrategoRules(manager),
+      performer = new StrategoMCTSPerformer(new StrategoRules(manager),
                                             new StrategoMoveGenerator(manager),
                                             new StrategoPlaythrough(new StrategoMoveGenerator(manager),
                                                                     new StrategoRules(manager)));

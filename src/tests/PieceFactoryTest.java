@@ -2,8 +2,8 @@ package tests;
 
 import java.util.ArrayList;
 
-import factorys.GamePieceFactory;
-import gameObjects.StrategoPiece;
+import project.stratego.ai.mcts.factories.GamePieceFactory;
+import project.stratego.ai.mcts.gameObjects.StrategoPiece;
 
 public class PieceFactoryTest {
 

@@ -1,14 +1,13 @@
 package run;
 
-import gameLogic.MainGameLogic;
-import gameLogic.SystemsManager;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
+import project.stratego.ai.mcts.abstractGameComponents.StrategoGame;
+import project.stratego.ai.mcts.aiPack.StrategoRules;
+import project.stratego.ai.mcts.gameLogic.MainGameLogic;
+import project.stratego.ai.mcts.gameLogic.SystemsManager;
 import ui.StrategoMainFrame;
-import abstractGameComponents.StrategoGame;
-import aiPack.StrategoRules;
 
 public class mctsTestA {
 

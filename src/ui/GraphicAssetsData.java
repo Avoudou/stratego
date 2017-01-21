@@ -1,11 +1,11 @@
 package ui;
 
-import gameObjects.PieceType;
-
 import java.awt.Image;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
+
+import project.stratego.ai.mcts.gameObjects.PieceType;
 
 public class GraphicAssetsData {
 

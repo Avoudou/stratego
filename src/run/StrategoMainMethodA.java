@@ -1,12 +1,11 @@
 package run;
 
-import gameLogic.MainGameLogic;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
+import project.stratego.ai.mcts.abstractGameComponents.StrategoGame;
+import project.stratego.ai.mcts.gameLogic.MainGameLogic;
 import ui.StrategoMainFrame;
-import abstractGameComponents.StrategoGame;
 
 public class StrategoMainMethodA {
 

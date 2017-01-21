@@ -1,14 +1,13 @@
 package ui;
 
-import gameLogic.MainGameLogic;
-
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import abstractGameComponents.StrategoGame;
+import project.stratego.ai.mcts.abstractGameComponents.StrategoGame;
+import project.stratego.ai.mcts.gameLogic.MainGameLogic;
 
 @SuppressWarnings("serial")
 public class StrategoMainFrame extends JFrame {

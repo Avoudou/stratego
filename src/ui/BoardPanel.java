@@ -1,9 +1,5 @@
 package ui;
 
-import gameObjects.StrategoBoard;
-import gameObjects.StrategoPiece;
-import gameObjects.TerrainType;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,8 +8,11 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
-import abstractGameComponents.Player;
-import abstractGameComponents.StrategoGame;
+import project.stratego.ai.mcts.abstractGameComponents.Player;
+import project.stratego.ai.mcts.abstractGameComponents.StrategoGame;
+import project.stratego.ai.mcts.gameObjects.StrategoBoard;
+import project.stratego.ai.mcts.gameObjects.StrategoPiece;
+import project.stratego.ai.mcts.gameObjects.TerrainType;
 
 @SuppressWarnings("serial")
 public class BoardPanel extends JPanel {

@@ -1,7 +1,7 @@
 package tests;
 
-import factorys.BoardFactory;
-import gameObjects.StrategoBoard;
+import project.stratego.ai.mcts.factories.BoardFactory;
+import project.stratego.ai.mcts.gameObjects.StrategoBoard;
 
 public class BoardFactoryTest {
 

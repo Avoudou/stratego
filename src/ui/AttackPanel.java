@@ -77,8 +77,14 @@ public class AttackPanel extends JPanel {
 	private class AttackEventListener implements ActionListener {
 		private int dx;
 		private int dy;
+		private SystemsManager manager;
+
+		private StrategoRules rules;
+
 
 		public AttackEventListener(int dx, int dy) {
+			this.manager = new SystemsManager();
+			this.rules = new StrategoRules(manager);
 			this.dx = dx;
 			this.dy = dy;
 
@@ -90,6 +96,7 @@ public class AttackPanel extends JPanel {
 			AttackEvent attackEvent = new AttackEvent(dx, dy, dL);
 			System.out.println("attack Button pressed");
 			logic.notifyForEvent(attackEvent);
+			Logger.println("" + rules.getScoreValue(game));
 
 		}
 
@@ -118,7 +125,7 @@ public class AttackPanel extends JPanel {
       double score = 1.0 * node.getGamesWon() / node.getGamesPlayed();
       Logger.println(move.getOrigintX() + " = x || y = " + move.getOriginY());
       Logger.println(move.getdX() + "=x|y=" + move.getdY());
-      Logger.println("Score: " + score);
+			Logger.println("won/loss ratio: " + score);
 
       int actualDx = move.getdX() - move.getOrigintX();
       int actualDy = move.getdY() - move.getOriginY();

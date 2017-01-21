@@ -38,11 +38,11 @@ public class StrategoRules extends Rules<StrategoGame> {
 		int tottalNorthStr = calculateTottalStr(playerNorthPieces);
 		int tottalSouthStr = calculateTottalStr(playerSouthPieces);
 		double difference = 1.0 * (tottalNorthStr - tottalSouthStr);
-		if (isTerminal(state)) {
-			double terminalScore = (difference > 0) ? 1.0 : -1.0;
-			return terminalScore;
-
-		}
+		// if (isTerminal(state)) {
+		// double terminalScore = (difference > 0) ? 1.0 : -1.0;
+		// return terminalScore;
+		//
+		// }
 		// if (tottalNorthStr > tottalSouthStr) {
 		// return 1;
 		// }
@@ -53,7 +53,7 @@ public class StrategoRules extends Rules<StrategoGame> {
 		// Logger.println("north str" + (tottalNorthStr));
 		// Logger.println("tottlStr" + (calculateTottalStr()));
 
-		double score = 1.0 * ((tottalNorthStr - tottalSouthStr)) / calculateTottalStr();
+		double score = 1.0 * (difference) / calculateTottalStr();
 		if (score < -1.0 || score > 1.0)
 			Logger.println("LAAAAAARGE trouble " + score);
 		return score;

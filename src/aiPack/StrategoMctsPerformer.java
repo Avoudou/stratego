@@ -20,6 +20,23 @@ public class StrategoMctsPerformer extends MCTSperformer<StrategoGame, StrategoA
 		this.playthrough = playthrough;
 	}
 
+	public TreeNode<StrategoGame, StrategoAbstractEvent> runMCTSMultiObvs(
+			TreeNode<StrategoGame, StrategoAbstractEvent> rootNode) {
+
+		for (int i = 0; i < noOfItterations; i++) {
+
+			mctsItteration(rootNode);
+
+			// Logger.println("number of  Tottal itterations  : " + (i + 1));
+		}
+		// Logger.println("" + rootNode.getGamesPlayed());
+
+		Logger.println(rootNode.getState().toString());
+
+		return getBestChild(rootNode);
+
+	}
+
 	@Override
 	public void mctsItteration(TreeNode<StrategoGame, StrategoAbstractEvent> rootNode) {
 		StrategoGame initGame = (StrategoGame) rootNode.getState().deepCopySelf();
@@ -54,9 +71,7 @@ public class StrategoMctsPerformer extends MCTSperformer<StrategoGame, StrategoA
 		addChildNodes(visititedNode, moves);
 		visititedNode = selection.selectChild(visititedNode);
 		double result = playthrough.returnStrategoPlaythroughResult(visititedNode.getState());
-		if (visititedNode.getState().getActivePlayer() == 2) {
-			result *= -1;
-		}
+		result *= scoreMultiplier;
 
 		updateTree(visititedNode, result);
 

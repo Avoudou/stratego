@@ -21,6 +21,7 @@ public class StrategoMoveGenerator extends MoveGenerator<StrategoGame, StrategoA
 
 	@Override
 	public ArrayList<StrategoAbstractEvent> generateAvailiableMoves(StrategoGame state) {
+		state.fixPiecePlacement(state);
 		ArrayList<StrategoAbstractEvent> allMovesList = new ArrayList<StrategoAbstractEvent>();
 		ArrayList<StrategoPiece> pieceList= state.getActivePlayerObj().getInGamePieces();
 		for (int i=0;i<pieceList.size();i++){

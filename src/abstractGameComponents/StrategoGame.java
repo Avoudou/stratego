@@ -117,7 +117,7 @@ public class StrategoGame extends SearchState {
 		return copyOfarray;
 	}
 
-	private void fixPiecePlacement(StrategoGame aGame) {
+	public void fixPiecePlacement(StrategoGame aGame) {
 	
 		ArrayList<StrategoPiece> northPieces = aGame.getPlayerNorth().getInGamePieces();
 		ArrayList<StrategoPiece> southPieces = aGame.getPlayerSouth().getInGamePieces();

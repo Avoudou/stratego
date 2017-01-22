@@ -1,6 +1,7 @@
 package project.stratego.ai.mcts.aiPack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import project.stratego.ai.mcts.abstractDefinitions.TreeNode;
 import project.stratego.ai.mcts.abstractGameComponents.StrategoGame;
@@ -9,11 +10,12 @@ import project.stratego.ai.mcts.abstractSearchComponents.MoveGenerator;
 import project.stratego.ai.mcts.abstractSearchComponents.Rules;
 import project.stratego.ai.mcts.events.StrategoAbstractEvent;
 import project.stratego.ai.mcts.gameObjects.StrategoPiece;
+import project.stratego.ai.mcts.logger.Logger;
 
 public class StrategoMCTSPerformer extends MCTSPerformer<StrategoGame, StrategoAbstractEvent> {
 
 	private StrategoPlaythrough playthrough;
-	private int numberOfObservations = 1;
+  private int numberOfObservations = 5;
 
 	public StrategoMCTSPerformer(Rules<StrategoGame> rules,
 			MoveGenerator<StrategoGame, StrategoAbstractEvent> moveGenerator, StrategoPlaythrough playthrough) {
@@ -34,15 +36,12 @@ public class StrategoMCTSPerformer extends MCTSPerformer<StrategoGame, StrategoA
 			// System.out.println(tempNode.getState().getBoard().getBoardStracture()[9][9].getOccupyingPiece()
 			// .getPieceType());
 
-			mctsItteration(tempNode);
-			simList.add(makeDummyNode(tempNode));
+
 
 			for (int j = 0; j < noOfItterations; j++) {
-
-
-
-
+        mctsItteration(tempNode);
 			}
+      simList.add(makeDummyNode(tempNode));
 
 		}
 
@@ -72,12 +71,14 @@ public class StrategoMCTSPerformer extends MCTSPerformer<StrategoGame, StrategoA
 				null);
 		returnNode.setGamesPlayed(tempNode.getGamesPlayed());
 		returnNode.setGamesWon(tempNode.getGamesWon());
+    Logger.println("Dummy node played " + returnNode.getGamesPlayed() + " won " + returnNode.getGamesWon());
+
 		ArrayList<TreeNode<StrategoGame, StrategoAbstractEvent>> dummyChilds = new ArrayList<TreeNode<StrategoGame, StrategoAbstractEvent>>();
 		for (int i = 0; i < tempNode.getChildrenList().size(); i++) {
 			TreeNode<StrategoGame, StrategoAbstractEvent> childTemp = new TreeNode<StrategoGame, StrategoAbstractEvent>(
 					null);
 			childTemp.setGamesPlayed(tempNode.getGamesPlayed());
-			childTemp.setGamesWon(tempNode.getGamesPlayed());
+      childTemp.setGamesWon(tempNode.getGamesWon());
 			dummyChilds.add(childTemp);
 		}
 		returnNode.setChildrenList(dummyChilds);
@@ -100,12 +101,41 @@ public class StrategoMCTSPerformer extends MCTSPerformer<StrategoGame, StrategoA
 	private TreeNode<StrategoGame, StrategoAbstractEvent> getBestChild(
 			ArrayList<TreeNode<StrategoGame, StrategoAbstractEvent>> simList, ArrayList<StrategoAbstractEvent> moveList) {
 
-		ArrayList<ArrayList<TreeNode<StrategoGame, StrategoAbstractEvent>>> valuesMatrix = new ArrayList<ArrayList<TreeNode<StrategoGame, StrategoAbstractEvent>>>();
+    ArrayList<ArrayList<TreeNode<StrategoGame, StrategoAbstractEvent>>> valuesMatrix = new ArrayList<ArrayList<TreeNode<StrategoGame, StrategoAbstractEvent>>>();
 		for (int i = 0; i < simList.size(); i++) {
 			valuesMatrix.add(simList.get(i).getChildrenList());
-
 		}
-		return getBestChild(simList.get(0));
+    int[] gamesPlayed = new int[moveList.size()];
+    int[] gamesWon = new int[moveList.size()];
+    double bestScore = Double.NEGATIVE_INFINITY;
+    int bestIndex = -1;
+    for (int i = 0; i < moveList.size(); i++) {
+
+      for (int j = 0; j < simList.size(); j++) {
+        TreeNode<StrategoGame, StrategoAbstractEvent> node = valuesMatrix.get(j).get(i);
+        // Take weighted average, taking into account the number of games played
+//        score += 1.0 * (node.getGamesWon() / node.getGamesPlayed()) * node.getGamesPlayed();
+        gamesPlayed[i] += node.getGamesPlayed();
+        gamesWon[i] += node.getGamesWon();
+        Logger.println("Node played " + node.getGamesPlayed() + " won " + node.getGamesWon());
+      }
+      double score = 1.0 * gamesWon[i] / gamesPlayed[i];
+      System.out.println(Arrays.toString(gamesPlayed));
+      System.out.println(Arrays.toString(gamesWon));
+      System.out.println("i " + i + " score " + score);
+
+      if (score > bestScore) {
+        bestIndex = i;
+        bestScore = score;
+      }
+    }
+    StrategoAbstractEvent bestAction = moveList.get(bestIndex);
+
+    TreeNode<StrategoGame, StrategoAbstractEvent> bestChild = new TreeNode<StrategoGame, StrategoAbstractEvent>(null);
+    bestChild.setAction(bestAction);
+    bestChild.setGamesPlayed(gamesPlayed[bestIndex]);
+    bestChild.setGamesWon(gamesWon[bestIndex]);
+    return bestChild;
 	}
 	@Override
 	public void mctsItteration(TreeNode<StrategoGame, StrategoAbstractEvent> rootNode) {
@@ -195,7 +225,7 @@ public class StrategoMCTSPerformer extends MCTSPerformer<StrategoGame, StrategoA
 		for (int i = 0; i < unKnownPieces.size(); i++) {
 			// System.out.println("  " + i);
 			int index = (int) (Math.random() * dummyList.size());
-			System.out.println(" random index " + index);
+      // System.out.println(" random index " + index);
 			StrategoPiece tempPiece = dummyList.get(index);
 			dummyList.remove(index);
 			// System.out.println(tempPiece.getPieceType());

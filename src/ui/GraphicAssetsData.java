@@ -43,8 +43,8 @@ public class GraphicAssetsData {
 		pieceImages.put(PieceType.COLONEL, new ImageIcon("Assets/colonel.png").getImage());
 		pieceImages.put(PieceType.MAJOR, new ImageIcon("Assets/major.png").getImage());
 		pieceImages.put(PieceType.CAPTAIN, new ImageIcon("Assets/captain.png").getImage());
-		pieceImages.put(PieceType.LIUTENANT, new ImageIcon("Assets/liutenant.png").getImage());
-		pieceImages.put(PieceType.SEARGENT, new ImageIcon("Assets/seargent.png").getImage());
+		pieceImages.put(PieceType.LIEUTENANT, new ImageIcon("Assets/liutenant.png").getImage());
+		pieceImages.put(PieceType.SERGEANT, new ImageIcon("Assets/seargent.png").getImage());
 		pieceImages.put(PieceType.MINER, new ImageIcon("Assets/miner.png").getImage());
 		pieceImages.put(PieceType.SCOUT, new ImageIcon("Assets/scout.png").getImage());
 		pieceImages.put(PieceType.SPY, new ImageIcon("Assets/spy.png").getImage());

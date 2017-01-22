@@ -119,7 +119,8 @@ public class AttackPanel extends JPanel {
       Logger.println("Making move");
 
       StrategoGame gameForMCTS = new StrategoGame(game);
-      TreeNode<StrategoGame, StrategoAbstractEvent> node = performer.runMCTS(new StrategoNode(gameForMCTS));
+			TreeNode<StrategoGame, StrategoAbstractEvent> node = performer.runMCTSMultiObvs(new StrategoNode(
+					gameForMCTS));
       StrategoMoveEvent move = (StrategoMoveEvent) node.getAction();
       double score = 1.0 * node.getGamesWon() / node.getGamesPlayed();
       Logger.println(move.getOrigintX() + " = x || y = " + move.getOriginY());
